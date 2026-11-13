@@ -2,8 +2,8 @@
 
 ## Overview
 
-The toolbar below the map and its controls. Every control but the toolbar's layout is exported, for apps that lay out
-their own toolbar.
+The toolbar below the map and its controls. The controls apps lay out in their own toolbar are exported: the basemap
+and terrain menus, the usage notice, the terrain button, the readout, the tile status and the buttons.
 
 ## Components
 

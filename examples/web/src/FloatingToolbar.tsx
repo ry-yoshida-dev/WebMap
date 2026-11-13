@@ -1,13 +1,5 @@
 import type { ReactElement } from "react";
-import {
-  BasemapPicker,
-  NavigationButtons,
-  PositionReadout,
-  TileStatusIndicator,
-  UsageNotice,
-  useMapContext,
-  useTileStatus,
-} from "@web-map/web";
+import { BasemapPicker, NavigationButtons, PositionReadout, TileStatusIndicator, UsageNotice, useMapContext } from "@web-map/web";
 
 import type { FloatingToolbarProps } from "./FloatingToolbarProps.js";
 
@@ -19,7 +11,7 @@ import type { FloatingToolbarProps } from "./FloatingToolbarProps.js";
  * @returns The panels.
  */
 export function FloatingToolbar({ children }: FloatingToolbarProps): ReactElement {
-  const { map, basemaps, basemap, changeBasemap, labels } = useMapContext();
+  const { map, basemaps, basemap, changeBasemap, tileStatus, labels } = useMapContext();
   return (
     <div className="floating-toolbar">
       <div className="floating-panel">
@@ -29,7 +21,7 @@ export function FloatingToolbar({ children }: FloatingToolbarProps): ReactElemen
       </div>
       <div className="floating-panel">
         <PositionReadout map={map} labels={labels} />
-        <TileStatusIndicator status={useTileStatus(map, basemap)} labels={labels} />
+        <TileStatusIndicator status={tileStatus} labels={labels} />
         <NavigationButtons map={map} labels={labels} />
       </div>
     </div>

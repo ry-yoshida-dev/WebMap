@@ -9,10 +9,15 @@ import { GSI_ELEVATION_SCHEME } from "../src/terrain/gsiElevationScheme.js";
 import { gsiToTerrarium } from "../src/terrain/gsiToTerrarium.js";
 import type { MapStyle } from "../src/style/MapStyle.js";
 import { OverlayCarrier } from "../src/style/OverlayCarrier.js";
+import type { OverlayConflictError } from "../src/style/OverlayConflictError.js";
 import { toMapStyle } from "../src/style/toMapStyle.js";
 import { toTerrainSource } from "../src/terrain/toTerrainSource.js";
 import { TERRAIN_SOURCE_PREFIX } from "../src/style/terrainSourceId.js";
 import { withTerrain } from "../src/style/withTerrain.js";
+
+function failOnConflict(error: OverlayConflictError): never {
+  throw error;
+}
 
 function gsiPixel(meters: number): readonly number[] {
   const units: number = Math.round(meters * 100);
@@ -88,7 +93,7 @@ describe("withTerrain", () => {
   });
 
   it("keeps the terrain once across a basemap switch that carries overlays", () => {
-    const carrier: OverlayCarrier = new OverlayCarrier();
+    const carrier: OverlayCarrier = new OverlayCarrier(failOnConflict);
     const first: MapStyle = withTerrain(carrier.carry(undefined, rasterStyle()), gsiTerrains.elevation, 1);
     const second: MapStyle = withTerrain(carrier.carry(first, rasterStyle()), gsiTerrains.elevation, 1);
     assert.deepEqual(second.terrain, first.terrain);

@@ -8,7 +8,6 @@ import { LiveMapControls } from "./LiveMapControls.js";
 import type { MapToolbarProps } from "./MapToolbarProps.js";
 import { TerrainPicker } from "./TerrainPicker.js";
 import { TerrainToggle } from "./TerrainToggle.js";
-import { TileStatus } from "../hooks/TileStatus.js";
 import { TileStatusIndicator } from "./TileStatusIndicator.js";
 import { UsageNotice } from "./UsageNotice.js";
 
@@ -44,7 +43,7 @@ export function MapToolbar(props: MapToolbarProps): ReactElement {
       {map === null ? (
         <>
           <span className="wmap-readout" />
-          <TileStatusIndicator status={TileStatus.LOADING} labels={labels} />
+          <TileStatusIndicator status={props.tileStatus} labels={labels} />
           <IconButton label={labels.zoomOut} isDisabled onClick={ignore}>
             <Icon name={IconName.ZOOM_OUT} />
           </IconButton>
@@ -56,7 +55,7 @@ export function MapToolbar(props: MapToolbarProps): ReactElement {
           </IconButton>
         </>
       ) : (
-        <LiveMapControls map={map} basemap={basemap} labels={labels} />
+        <LiveMapControls map={map} tileStatus={props.tileStatus} labels={labels} />
       )}
     </div>
   );

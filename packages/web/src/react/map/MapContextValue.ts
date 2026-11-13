@@ -2,6 +2,7 @@ import type { Map as MapLibreMap } from "maplibre-gl";
 import type { Basemap, Terrain } from "@web-map/core";
 
 import type { MapLabels } from "./MapLabels.js";
+import type { TileStatus } from "../hooks/TileStatus.js";
 
 /**
  * What a {@link WebMap} offers its children.
@@ -39,6 +40,11 @@ export interface MapContextValue {
   readonly isTerrainShown: boolean;
   /** Turn 3D terrain on or off, as the built-in button does. */
   readonly changeTerrainShown: (isShown: boolean) => void;
+  /**
+   * Whether the basemap's tiles are loading or have failed since it was chosen, for {@link TileStatusIndicator}.
+   * Failures of the terrain and of the application's overlays are not counted.
+   */
+  readonly tileStatus: TileStatus;
   /** Text of the controls, with the map's overrides applied. */
   readonly labels: MapLabels;
   /** Element of the toolbar that {@link MapControlSlot} renders into, or null before it mounts or while the toolbar is hidden. */

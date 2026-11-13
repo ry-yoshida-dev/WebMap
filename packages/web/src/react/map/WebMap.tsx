@@ -16,6 +16,8 @@ import { MapToolbar } from "../controls/MapToolbar.js";
 import { readViewport } from "../../camera/readViewport.js";
 import { requireTerrainExaggeration } from "../../terrain/requireTerrainExaggeration.js";
 import { useMapLibre } from "../hooks/useMapLibre.js";
+import { useTileStatus } from "../hooks/useTileStatus.js";
+import type { TileStatus } from "../hooks/TileStatus.js";
 import type { WebMapProps } from "./WebMapProps.js";
 
 const japanCamera: MapCamera = defineMapCamera({ center: { lng: 137.5, lat: 37.5 }, zoom: 4.5 });
@@ -39,6 +41,13 @@ function requireUniqueTerrains(terrains: readonly Terrain[]): void {
   }
 }
 
+function requireKnownId(items: readonly { readonly id: string }[], id: string | undefined, kind: string): string | undefined {
+  if (id !== undefined && !items.some((item: { readonly id: string }) => item.id === id)) {
+    throw new RangeError(`${kind} ${id} is not one of the map's ${kind.toLowerCase()}s`);
+  }
+  return id;
+}
+
 function findTerrain(terrains: readonly Terrain[], id: string | undefined): Terrain | null {
   return terrains.find((terrain: Terrain) => terrain.id === id) ?? terrains[0] ?? null;
 }
@@ -57,23 +66,25 @@ function findTerrain(terrains: readonly Terrain[], id: string | undefined): Terr
  *
  * @param props - Basemaps, initial view, callbacks and presentation.
  * @returns The map element.
- * @throws RangeError When `basemaps` is empty or has duplicate ids, `terrains` has duplicate ids, or the terrain
- *   exaggeration is negative.
+ * @throws RangeError When `basemaps` is empty or has duplicate ids, `terrains` has duplicate ids, a basemap or
+ *   terrain id given is not among them, or the terrain exaggeration is negative.
  */
 export function WebMap(props: WebMapProps): ReactElement {
   const basemaps: readonly Basemap[] = props.basemaps ?? openBasemaps;
   const firstBasemap: Basemap = requireFirstOfUnique(basemaps);
   const labels: MapLabels = useMemo(() => ({ ...defaultMapLabels, ...props.labels }), [props.labels]);
 
-  const [chosenId, setChosenId] = useState<string | undefined>(props.initialBasemapId);
-  const shownId: string | undefined = props.basemapId ?? chosenId;
+  const [chosenId, setChosenId] = useState<string | undefined>(() => requireKnownId(basemaps, props.initialBasemapId, "Basemap"));
+  const shownId: string | undefined = requireKnownId(basemaps, props.basemapId, "Basemap") ?? chosenId;
   const basemap: Basemap = basemaps.find((candidate: Basemap) => candidate.id === shownId) ?? firstBasemap;
   const terrains: readonly Terrain[] = props.terrains ?? openTerrains;
   requireUniqueTerrains(terrains);
   const terrainExaggeration: number = props.terrainExaggeration ?? 1;
   requireTerrainExaggeration(terrainExaggeration);
-  const [chosenTerrainId, setChosenTerrainId] = useState<string | undefined>(props.initialTerrainId);
-  const terrain: Terrain | null = findTerrain(terrains, props.terrainId ?? chosenTerrainId);
+  const [chosenTerrainId, setChosenTerrainId] = useState<string | undefined>(() =>
+    requireKnownId(terrains, props.initialTerrainId, "Terrain"),
+  );
+  const terrain: Terrain | null = findTerrain(terrains, requireKnownId(terrains, props.terrainId, "Terrain") ?? chosenTerrainId);
   const [chosenIsTerrainShown, setChosenIsTerrainShown] = useState<boolean>(props.initialIsTerrainShown ?? false);
   const isTerrainShown: boolean = props.isTerrainShown ?? chosenIsTerrainShown;
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -90,6 +101,7 @@ export function WebMap(props: WebMapProps): ReactElement {
     isHashSynced: props.isHashSynced ?? false,
   });
   const map: MapLibreMap | null = instance.status === MapInstanceStatus.READY ? instance.map : null;
+  const tileStatus: TileStatus = useTileStatus(instance, basemap);
 
   const notifyViewport = useEffectEvent((): void => {
     if (map !== null) {
@@ -174,6 +186,7 @@ export function WebMap(props: WebMapProps): ReactElement {
             changeTerrain,
             isTerrainShown,
             changeTerrainShown,
+            tileStatus,
             labels,
             controlSlot: isToolbarShown ? controlSlot : null,
           },
@@ -187,6 +200,7 @@ export function WebMap(props: WebMapProps): ReactElement {
       changeTerrain,
       isTerrainShown,
       changeTerrainShown,
+      tileStatus,
       labels,
       controlSlot,
       isToolbarShown,
@@ -215,6 +229,7 @@ export function WebMap(props: WebMapProps): ReactElement {
           onTerrainChange={changeTerrain}
           isTerrainShown={isTerrainShown}
           onTerrainShownChange={changeTerrainShown}
+          tileStatus={tileStatus}
           labels={labels}
           slotRef={setControlSlot}
         />

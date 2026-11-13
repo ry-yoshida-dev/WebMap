@@ -2,6 +2,7 @@ import type { Map as MapLibreMap } from "maplibre-gl";
 import type { Basemap, Terrain } from "@web-map/core";
 
 import type { MapLabels } from "../map/MapLabels.js";
+import type { TileStatus } from "../hooks/TileStatus.js";
 
 /**
  * Options of {@link MapToolbar}.
@@ -17,6 +18,7 @@ export interface MapToolbarProps {
   readonly onTerrainChange: (terrain: Terrain) => void;
   readonly isTerrainShown: boolean;
   readonly onTerrainShownChange: (isShown: boolean) => void;
+  readonly tileStatus: TileStatus;
   readonly labels: MapLabels;
   /** Receives the element extensions render their controls into. */
   readonly slotRef: (element: HTMLElement | null) => void;

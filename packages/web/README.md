@@ -6,7 +6,8 @@ React DOM `WebMap` on MapLibre GL JS. The map fills the space it is given; the t
 which opens a panel of thumbnails, with a notice for restricted terms, the 3D terrain button and elevation data menu, extension controls, the position under the pointer, the zoom level, tile loading
 and failure status, and zoom and north buttons. Attribution and a scale bar sit on the map. Children extend it: they
 draw on the MapLibre map from `useMapContext`, and their overlays are carried onto the next basemap when the user
-switches. The map's style stays loaded while the basemap changes, so overlays can be updated at any time, and images
+switches. Give overlays ids no basemap uses: an overlay sharing an id with the next basemap's sources or layers is
+left off it and reported as an `OverlayConflictError` `error` event of the map. The map's style stays loaded while the basemap changes, so overlays can be updated at any time, and images
 added with `map.addImage` are kept. Raster basemaps have no glyphs of their own: an overlay with text over a raster
 basemap shown first needs `map.setGlyphs`, and glyphs a previous basemap brought are kept while a raster basemap is
 shown. Set `isGrayscale` to show the basemap in shades of gray so overlays stand out; overlays, sprite icons and
@@ -22,7 +23,7 @@ off. The terrain stays when the basemap changes. To stand 3D objects on the grou
 Where the screen has no room for the bar, set `isToolbarShown={false}` and lay out the exported controls
 (`BasemapPicker`, `UsageNotice`, `TerrainToggle`, `TerrainPicker`, `PositionReadout`, `TileStatusIndicator`, `NavigationButtons`, `IconButton`) yourself.
 `useMapContext` gives them the map, the basemaps and terrains, the chosen ones, whether 3D terrain is on, the functions
-changing them and the labels. The map is the
+changing them, the status of the basemap's tiles and the labels. The map is the
 containing block of its children, so absolutely positioned controls float over it. To keep the basemap choice in the
 app's state, pass `basemapId` and update it from `onBasemapChange`.
 
@@ -39,15 +40,15 @@ of the map; `cameraForExtent` from `@web-map/core` brings the range back into vi
 | [src/react/map](src/react/map) | `WebMap`, its props and labels, and the context offered to children |
 | [src/react/controls](src/react/controls) | Toolbar, basemap menu, usage notice, 3D terrain button and menu, readout, tile status and buttons |
 | [src/react/extensions](src/react/extensions) | `MapControlSlot`, placing children's controls in the built-in toolbar, and `MapExtentFrame` |
-| [src/react/hooks](src/react/hooks) | `useMapLibre`, `useMapContext`, `useMapState`, `useTileStatus` and `useBasemapThumbnails` |
+| [src/react/hooks](src/react/hooks) | `useMapContext` and `useMapState`, and the map's lifecycle, tile status and thumbnails behind `WebMap` |
 | [src/react/icons](src/react/icons) | Glyphs of the controls |
 | [src/react/styles](src/react/styles) | Style sheet themed through `--wmap-*` custom properties |
 | [src/style](src/style) | Basemaps to MapLibre styles, grayscale styles, terrain, attribution HTML and carrying overlays across styles |
 | [src/terrain](src/terrain) | Terrains to MapLibre elevation sources, re-encoding GSI elevation tiles |
 | [src/camera](src/camera) | Reading the camera of a MapLibre map |
-| [src/status](src/status) | Telling missing coverage from failed tiles |
+| [src/status](src/status) | Following a map's first load, and telling the basemap's failures from others and from missing coverage |
 | [src/thumbnail](src/thumbnail) | Previews of basemaps: a tile of a raster basemap, or a style drawn on a hidden map |
-| [test](test) | Style conversion, grayscale, attribution escaping, overlay carrying and terrain swapping tests |
+| [test](test) | Style conversion, grayscale, attribution escaping, overlay carrying, error classification and terrain swapping tests |
 
 ## Examples
 

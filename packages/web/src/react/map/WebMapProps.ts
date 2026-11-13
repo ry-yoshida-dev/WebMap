@@ -12,10 +12,13 @@ export interface WebMapProps {
   /**
    * Basemap on screen, for an app that keeps the choice in its own state; it then
    * changes only when this prop does, so update it from {@link onBasemapChange}.
-   * The first of {@link basemaps} when unknown.
+   * Must be the id of one of {@link basemaps}.
    */
   readonly basemapId?: string;
-  /** Basemap shown first when {@link basemapId} is omitted; the first of {@link basemaps} when omitted or unknown. */
+  /**
+   * Basemap shown first when {@link basemapId} is omitted; the first of {@link basemaps} when omitted. Must be the id
+   * of one of {@link basemaps}.
+   */
   readonly initialBasemapId?: string;
   /**
    * Elevation data the user can raise the ground from, in menu order; `openTerrains`, GSI first, when omitted. Ids
@@ -24,10 +27,13 @@ export interface WebMapProps {
   readonly terrains?: readonly Terrain[];
   /**
    * Id of the chosen terrain, for an app that keeps the choice in its own state; it then changes only when this prop
-   * does, so update it from {@link onTerrainChange}. The first of {@link terrains} when unknown.
+   * does, so update it from {@link onTerrainChange}. Must be the id of one of {@link terrains}.
    */
   readonly terrainId?: string;
-  /** Terrain chosen first when {@link terrainId} is omitted; the first of {@link terrains} when omitted or unknown. */
+  /**
+   * Terrain chosen first when {@link terrainId} is omitted; the first of {@link terrains} when omitted. Must be the id
+   * of one of {@link terrains}.
+   */
   readonly initialTerrainId?: string;
   /**
    * Whether the ground is raised in 3D from the chosen terrain, for an app that keeps the setting in its own state;
