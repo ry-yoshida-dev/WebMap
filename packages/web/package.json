@@ -28,9 +28,9 @@
     "@web-map/core": "0.1.0"
   },
   "peerDependencies": {
-    "maplibre-gl": ">=6.16",
-    "react": ">=19.2",
-    "react-dom": ">=19.2"
+    "maplibre-gl": "^6.16.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@maplibre/maplibre-gl-style-spec": "^26.6.0",
