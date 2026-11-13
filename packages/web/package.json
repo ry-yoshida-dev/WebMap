@@ -1,0 +1,43 @@
+{
+  "name": "@web-map/web",
+  "version": "0.1.0",
+  "description": "React DOM map view showing the basemaps of WebMap on MapLibre GL JS.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --import tsx --test \"test/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@web-map/core": "0.1.0"
+  },
+  "peerDependencies": {
+    "maplibre-gl": ">=6.16",
+    "react": ">=19.2",
+    "react-dom": ">=19.2"
+  },
+  "devDependencies": {
+    "@maplibre/maplibre-gl-style-spec": "^26.6.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "maplibre-gl": "^6.16.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}

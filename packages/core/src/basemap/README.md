@@ -1,0 +1,26 @@
+# basemap
+
+## Overview
+
+What a basemap is: how it is delivered, whom it credits and under which terms it may be shown.
+
+## Components
+
+| Component | Responsibility |
+|-----------|----------------|
+| [Basemap.ts](Basemap.ts) | Union of the basemap kinds |
+| [BasemapKind.ts](BasemapKind.ts) | Raster tiles or a style document |
+| [BasemapIdentity.ts](BasemapIdentity.ts) | Id, title, attribution and terms shared by every basemap and terrain |
+| [RasterTileBasemap.ts](RasterTileBasemap.ts) | Basemap of Web Mercator raster tiles |
+| [StyleBasemap.ts](StyleBasemap.ts) | Basemap described by a MapLibre style document |
+| [Attribution.ts](Attribution.ts) | Credit linking to its source |
+| [BasemapUsage.ts](BasemapUsage.ts) | License, terms URL and conditions |
+| [CommercialUse.ts](CommercialUse.ts) | Whether commercial products may show the basemap |
+| [defineRasterTileBasemap.ts](defineRasterTileBasemap.ts) | Validated raster tile basemap |
+| [RasterTileBasemapSpecification.ts](RasterTileBasemapSpecification.ts) | Input of `defineRasterTileBasemap` |
+| [defineStyleBasemap.ts](defineStyleBasemap.ts) | Validated style basemap |
+| [StyleBasemapSpecification.ts](StyleBasemapSpecification.ts) | Input of `defineStyleBasemap` |
+| [requireBasemapIdentity.ts](requireBasemapIdentity.ts) | Checks of the shared fields, also of terrains |
+| [requireTileRange.ts](requireTileRange.ts) | Checks of a tile template, zoom range and tile size, also of terrains |
+| [requireHttpsUrl.ts](requireHttpsUrl.ts) | Check that a URL is `https` |
+| [BasemapDefinitionError.ts](BasemapDefinitionError.ts) | Error of a malformed basemap or terrain definition |

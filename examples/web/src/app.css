@@ -1,0 +1,76 @@
+:root {
+  --page-background: #ffffff;
+  --page-foreground: #1f2328;
+  --page-muted: #59636e;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-background: #0d1117;
+    --page-foreground: #e6edf3;
+    --page-muted: #9198a1;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--page-background);
+  color: var(--page-foreground);
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100dvh;
+  padding: 16px;
+}
+.page h1 {
+  margin: 0;
+  font-size: 18px;
+}
+.page p {
+  margin: 0;
+  color: var(--page-muted);
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+}
+.map {
+  flex: 1 1 auto;
+  min-height: 320px;
+  border-radius: 8px;
+}
+.camera {
+  font-variant-numeric: tabular-nums;
+  color: var(--page-muted);
+  overflow-wrap: anywhere;
+}
+.floating-toolbar {
+  position: absolute;
+  inset: 8px 8px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+.floating-panel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid var(--wmap-border);
+  border-radius: 8px;
+  background: var(--wmap-bar);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+}

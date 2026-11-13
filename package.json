@@ -1,0 +1,29 @@
+{
+  "name": "web-map",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "packages/restricted-basemaps",
+    "packages/web",
+    "examples/web"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace packages/core --workspace packages/restricted-basemaps --workspace packages/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^26.6.6",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1"
+  }
+}

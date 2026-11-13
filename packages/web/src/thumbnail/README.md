@@ -1,0 +1,15 @@
+# thumbnail
+
+## Overview
+
+Small previews of basemaps for the basemap menu: a raster basemap shows one of its tiles, and a style basemap is drawn
+on a hidden map. All frame the same area around Tokyo.
+
+## Components
+
+| Component | Responsibility |
+|-----------|----------------|
+| [thumbnailView.ts](thumbnailView.ts) | Size and framing of thumbnails, and the tile a raster basemap shows |
+| [StyleThumbnailRenderer.ts](StyleThumbnailRenderer.ts) | Drawing style basemaps into images on one hidden map |
+| [Thumbnail.ts](Thumbnail.ts) | A thumbnail and its image |
+| [ThumbnailStatus.ts](ThumbnailStatus.ts) | Pending, ready or failed |
