@@ -25,8 +25,9 @@ Where the screen has no room for the bar, set `isToolbarShown={false}` and lay o
 `useMapContext` gives them the map, the basemaps and terrains, the chosen ones, whether 3D terrain is on, the functions
 changing them, the status of the basemap's tiles and the labels. The map is the
 containing block of its children, so absolutely positioned controls float over it. To keep the basemap choice in the
-app's state, pass `basemapId` and update it from `onBasemapChange`. Basemaps and terrains are told apart by id, so
-building new objects for them on every render reloads nothing. When the first basemap cannot be shown, the map shows
+app's state, pass `basemapId` and update it from `onBasemapChange`. Basemaps and terrains are told apart by id and
+by the URLs they load, so building new objects for them on every render reloads nothing, while one redefined under
+its id, as with a new API key, loads from its new URL. When the first basemap cannot be shown, the map shows
 the error, and choosing another basemap tries again. The types of `@web-map/core` that the props use, such as `Basemap`,
 `Terrain` and `MapViewport`, are exported from this package too.
 Modules using React state, context or events are marked `"use client"`, so React Server Components frameworks such

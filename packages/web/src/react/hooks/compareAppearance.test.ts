@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { gsiTerrains, mapzenTerrains } from "@web-map/core";
+import { defineTerrain, gsiTerrains, mapzenTerrains } from "@web-map/core";
 
 import { AppearanceChange } from "./AppearanceChange.js";
 import { compareAppearance } from "./compareAppearance.js";
 import type { MapAppearance } from "./MapAppearance.js";
-import { sampleRasterBasemaps } from "../testing/sampleBasemaps.js";
+import { sampleRasterBasemaps, sampleStyleBasemap } from "../testing/sampleBasemaps.js";
 
 const shown: MapAppearance = {
   basemap: sampleRasterBasemaps.first,
@@ -39,5 +39,18 @@ describe("compareAppearance", () => {
   it("covers a terrain change made with a basemap change by reloading the style", () => {
     const next: MapAppearance = { ...shown, basemap: sampleRasterBasemaps.second, terrain: null };
     assert.equal(compareAppearance(shown, next), AppearanceChange.RELOAD_STYLE);
+  });
+
+  it("reloads the style for a basemap redefined under its id, as with another API key", () => {
+    const rekeyed = { ...shown.basemap, tileUrlTemplate: `${sampleRasterBasemaps.first.tileUrlTemplate}?key=new` };
+    assert.equal(compareAppearance(shown, { ...shown, basemap: rekeyed }), AppearanceChange.RELOAD_STYLE);
+    const styled: MapAppearance = { ...shown, basemap: sampleStyleBasemap };
+    const moved: MapAppearance = { ...shown, basemap: { ...sampleStyleBasemap, styleUrl: "https://tiles.example/next.json" } };
+    assert.equal(compareAppearance(styled, moved), AppearanceChange.RELOAD_STYLE);
+  });
+
+  it("swaps the terrain for one redefined under its id", () => {
+    const moved = defineTerrain({ ...gsiTerrains.elevation, tileUrlTemplate: "https://tiles.example/dem/{z}/{x}/{y}.png" });
+    assert.equal(compareAppearance(shown, { ...shown, terrain: moved }), AppearanceChange.SWAP_TERRAIN);
   });
 });

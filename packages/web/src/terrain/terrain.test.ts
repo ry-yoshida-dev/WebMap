@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { gsiBasemaps, gsiTerrains, mapzenTerrains } from "@web-map/core";
+import { defineTerrain, gsiBasemaps, gsiTerrains, mapzenTerrains } from "@web-map/core";
 
 import { applyTerrain } from "./applyTerrain.js";
 import type { TerrainTarget } from "./applyTerrain.js";
@@ -12,7 +12,7 @@ import { OverlayCarrier } from "../style/OverlayCarrier.js";
 import type { OverlayConflictError } from "../style/OverlayConflictError.js";
 import { toMapStyle } from "../style/toMapStyle.js";
 import { toTerrainSource } from "./toTerrainSource.js";
-import { TERRAIN_SOURCE_PREFIX } from "../style/terrainSourceId.js";
+import { TERRAIN_SOURCE_PREFIX, terrainSourceId } from "../style/terrainSourceId.js";
 import { withTerrain } from "../style/withTerrain.js";
 
 function failOnConflict(error: OverlayConflictError): never {
@@ -76,8 +76,8 @@ describe("toTerrainSource", () => {
 describe("withTerrain", () => {
   it("adds the terrain's source and points the terrain at it", () => {
     const style: MapStyle = withTerrain(rasterStyle(), gsiTerrains.elevation, 1.5);
-    assert.deepEqual(style.terrain, { source: `${TERRAIN_SOURCE_PREFIX}gsi-elevation`, exaggeration: 1.5 });
-    assert.ok(`${TERRAIN_SOURCE_PREFIX}gsi-elevation` in style.sources);
+    assert.deepEqual(style.terrain, { source: terrainSourceId(gsiTerrains.elevation), exaggeration: 1.5 });
+    assert.ok(terrainSourceId(gsiTerrains.elevation) in style.sources);
   });
 
   it("replaces the previous terrain and flattens with null", () => {
@@ -85,7 +85,7 @@ describe("withTerrain", () => {
     const switched: MapStyle = withTerrain(raised, mapzenTerrains.terrarium, 1);
     assert.deepEqual(
       Object.keys(switched.sources).filter((id: string) => id.startsWith(TERRAIN_SOURCE_PREFIX)),
-      [`${TERRAIN_SOURCE_PREFIX}mapzen-terrarium`],
+      [terrainSourceId(mapzenTerrains.terrarium)],
     );
     const flat: MapStyle = withTerrain(switched, null, 1);
     assert.equal(flat.terrain, undefined);
@@ -134,8 +134,8 @@ describe("applyTerrain", () => {
     const map: FakeTerrainTarget = new FakeTerrainTarget();
     applyTerrain(map, gsiTerrains.elevation, 1);
     applyTerrain(map, mapzenTerrains.terrarium, 1);
-    assert.deepEqual([...map.sources.keys()], ["basemap", `${TERRAIN_SOURCE_PREFIX}mapzen-terrarium`]);
-    assert.deepEqual(map.terrain, { source: `${TERRAIN_SOURCE_PREFIX}mapzen-terrarium`, exaggeration: 1 });
+    assert.deepEqual([...map.sources.keys()], ["basemap", terrainSourceId(mapzenTerrains.terrarium)]);
+    assert.deepEqual(map.terrain, { source: terrainSourceId(mapzenTerrains.terrarium), exaggeration: 1 });
   });
 
   it("keeps the source when only the exaggeration changes", () => {
@@ -143,7 +143,16 @@ describe("applyTerrain", () => {
     applyTerrain(map, gsiTerrains.elevation, 1);
     applyTerrain(map, gsiTerrains.elevation, 2);
     assert.equal(map.addedCount, 1);
-    assert.deepEqual(map.terrain, { source: `${TERRAIN_SOURCE_PREFIX}gsi-elevation`, exaggeration: 2 });
+    assert.deepEqual(map.terrain, { source: terrainSourceId(gsiTerrains.elevation), exaggeration: 2 });
+  });
+
+  it("replaces the source of a terrain redefined under its id", () => {
+    const map: FakeTerrainTarget = new FakeTerrainTarget();
+    const moved = defineTerrain({ ...mapzenTerrains.terrarium, tileUrlTemplate: "https://tiles.example/dem/{z}/{x}/{y}.png" });
+    applyTerrain(map, mapzenTerrains.terrarium, 1);
+    applyTerrain(map, moved, 1);
+    assert.deepEqual([...map.sources.keys()], ["basemap", terrainSourceId(moved)]);
+    assert.notEqual(terrainSourceId(moved), terrainSourceId(mapzenTerrains.terrarium));
   });
 
   it("flattens the ground and removes the terrain source", () => {
