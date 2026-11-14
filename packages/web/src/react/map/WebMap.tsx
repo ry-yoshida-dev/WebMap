@@ -13,6 +13,7 @@ import { MapInstanceStatus } from "../hooks/MapInstanceStatus.js";
 import type { MapAppearance } from "../hooks/MapAppearance.js";
 import type { MapInstance } from "../hooks/MapInstance.js";
 import type { MapLabels } from "./MapLabels.js";
+import { MapColorScheme } from "../styles/MapColorScheme.js";
 import { MapStyles } from "../styles/MapStyles.js";
 import { MapToolbar } from "../controls/MapToolbar.js";
 import { readViewport } from "../../camera/readViewport.js";
@@ -50,6 +51,12 @@ function requireKnownId(items: readonly { readonly id: string }[], id: string | 
     throw new RangeError(`${kind} ${id} is not one of the map's ${kind.toLowerCase()}s`);
   }
   return id;
+}
+
+/** Classes of the root element, picking the color scheme the style sheet draws. */
+function rootClassName(colorScheme: MapColorScheme, className: string | undefined): string {
+  const scheme: string | null = colorScheme === MapColorScheme.SYSTEM ? null : `wmap-${colorScheme}`;
+  return ["wmap-root", scheme, className].filter((name: string | null | undefined) => name != null).join(" ");
 }
 
 function findTerrain(terrains: readonly Terrain[], id: string | undefined): Terrain | null {
@@ -211,7 +218,7 @@ export function WebMap(props: WebMapProps): ReactElement {
   );
 
   return (
-    <div className={props.className === undefined ? "wmap-root" : `wmap-root ${props.className}`} style={props.style}>
+    <div className={rootClassName(props.colorScheme ?? MapColorScheme.SYSTEM, props.className)} style={props.style}>
       <MapStyles />
       <div className="wmap-stage">
         <div className="wmap-canvas" ref={setContainer} />

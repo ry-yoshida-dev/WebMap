@@ -40,6 +40,8 @@ export { useMapContext } from "./react/hooks/useMapContext.js";
 export { useMapState } from "./react/hooks/useMapState.js";
 export type { MapStateTarget } from "./react/hooks/useMapState.js";
 
+export { MapColorScheme } from "./react/styles/MapColorScheme.js";
+
 export { Icon } from "./react/icons/Icon.js";
 export { IconName } from "./react/icons/IconName.js";
 export type { IconProps } from "./react/icons/IconProps.js";

@@ -12,7 +12,8 @@ around Tokyo, which every bundled basemap covers; set `thumbnailCenter` to a pla
 added with `map.addImage` are kept. Raster basemaps have no glyphs of their own: an overlay with text over a raster
 basemap shown first needs `map.setGlyphs`, and glyphs a previous basemap brought are kept while a raster basemap is
 shown. Set `isGrayscale` to show the basemap in shades of gray so overlays stand out; overlays, sprite icons and
-colors written as legacy `stops` functions keep their colors.
+colors written as legacy `stops` functions keep their colors. The toolbar follows the system's light or dark
+preference; set `colorScheme` to `MapColorScheme.LIGHT` or `MapColorScheme.DARK` to follow the app's own setting.
 
 The 3D terrain button raises the ground, tilting the map if it is viewed from straight above, and the menu beside it
 chooses the elevation data: GSI elevation tiles, covering Japan, by default, or worldwide Mapzen Terrain Tiles. Any

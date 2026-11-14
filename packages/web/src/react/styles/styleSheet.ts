@@ -1,3 +1,16 @@
+/** Custom properties of the dark variant, used both when the system prefers it and when the map is set dark. */
+const darkTokens: string = `
+--wmap-accent: #4493f8;
+--wmap-foreground: #e6edf3;
+--wmap-muted: #9198a1;
+--wmap-bar: #151b23;
+--wmap-border: #3d444d;
+--wmap-hover: rgba(230, 237, 243, 0.1);
+--wmap-warning: #d29922;
+--wmap-warning-surface: rgba(187, 128, 9, 0.15);
+--wmap-stage: #0d1117;
+--wmap-frame-mask: rgba(1, 4, 9, 0.5);`.trim();
+
 /**
  * Style sheet of the map and its toolbar, themed through `--wmap-*` custom properties.
  */
@@ -24,19 +37,14 @@ export const mapStyleSheet: string = `
   color: var(--wmap-foreground);
   font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
+/* :where keeps these as specific as .wmap-root alone, so an application's overrides of the properties still apply. */
 @media (prefers-color-scheme: dark) {
-  .wmap-root {
-    --wmap-accent: #4493f8;
-    --wmap-foreground: #e6edf3;
-    --wmap-muted: #9198a1;
-    --wmap-bar: #151b23;
-    --wmap-border: #3d444d;
-    --wmap-hover: rgba(230, 237, 243, 0.1);
-    --wmap-warning: #d29922;
-    --wmap-warning-surface: rgba(187, 128, 9, 0.15);
-    --wmap-stage: #0d1117;
-    --wmap-frame-mask: rgba(1, 4, 9, 0.5);
+  .wmap-root:where(:not(.wmap-light)) {
+${darkTokens}
   }
+}
+.wmap-root:where(.wmap-dark) {
+${darkTokens}
 }
 .wmap-stage { position: relative; flex: 1 1 auto; min-height: 120px; background: var(--wmap-stage); }
 /* Two classes outrank MapLibre's own .maplibregl-map { position: relative }. */

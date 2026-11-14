@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Basemap, LngLat, MapCamera, MapViewport, Terrain } from "@web-map/core";
 
+import type { MapColorScheme } from "../styles/MapColorScheme.js";
 import type { MapLabels } from "./MapLabels.js";
 
 /**
@@ -81,6 +82,11 @@ export interface WebMapProps {
    * the area of the application's own basemaps. Must lie within Web Mercator.
    */
   readonly thumbnailCenter?: LngLat;
+  /**
+   * Colors of the toolbar and controls; the system's preference when omitted. Set it to follow an application's own
+   * light or dark setting.
+   */
+  readonly colorScheme?: MapColorScheme;
   /** Text overriding the English defaults. */
   readonly labels?: Partial<MapLabels>;
   readonly className?: string;
