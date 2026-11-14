@@ -6,6 +6,7 @@ export { OverlayConflictError } from "./style/OverlayConflictError.js";
 export { defaultMapLabels } from "./react/map/defaultMapLabels.js";
 export type { MapContextValue } from "./react/map/MapContextValue.js";
 export type { MapLabels } from "./react/map/MapLabels.js";
+export { MissingMapContextError } from "./react/map/MissingMapContextError.js";
 export { WebMap } from "./react/map/WebMap.js";
 export type { WebMapProps } from "./react/map/WebMapProps.js";
 

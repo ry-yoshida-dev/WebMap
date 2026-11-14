@@ -22,11 +22,12 @@ export class StyleThumbnailRenderer {
    * Draw a style once the styles requested before it are done.
    *
    * @param styleUrl - URL of the style document.
-   * @returns A PNG data URL, or null when the style could not be loaded or the renderer was disposed.
+   * @returns A PNG data URL, or null when the style could not be loaded, the hidden map could not be created, as
+   *   when no WebGL context is left, or the renderer was disposed. It never rejects.
    */
   render(styleUrl: string): Promise<string | null> {
-    const drawing: Promise<string | null> = this.queue.then(() => this.draw(styleUrl));
-    this.queue = drawing.catch(() => null);
+    const drawing: Promise<string | null> = this.queue.then(() => this.draw(styleUrl)).catch(() => null);
+    this.queue = drawing;
     return drawing;
   }
 

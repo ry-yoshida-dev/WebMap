@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { CommercialUse } from "@web-map/core";
+import { BasemapDefinitionError, CommercialUse } from "@web-map/core";
 import type { Basemap } from "@web-map/core";
 
 import { createCartoBasemaps, eoxBasemaps, openStreetMapBasemaps } from "./index.js";
@@ -25,6 +25,6 @@ describe("restricted basemaps", () => {
   });
 
   it("rejects a blank CARTO key", () => {
-    assert.throws(() => createCartoBasemaps(" "), RangeError);
+    assert.throws(() => createCartoBasemaps(" "), BasemapDefinitionError);
   });
 });

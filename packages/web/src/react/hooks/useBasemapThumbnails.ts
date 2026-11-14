@@ -10,7 +10,7 @@ import { ThumbnailStatus } from "../../thumbnail/ThumbnailStatus.js";
 /**
  * Thumbnails of basemaps. Raster basemaps point at one of their tiles; style
  * basemaps are drawn on a hidden map, only once `isRequested` turns true, as that
- * downloads their styles and tiles.
+ * downloads their styles and tiles. A style that cannot be drawn is reported as failed.
  *
  * @param basemaps - Basemaps to preview.
  * @param isRequested - Whether to start drawing style basemaps; it can be left true afterwards.
@@ -29,13 +29,14 @@ export function useBasemapThumbnails(basemaps: readonly Basemap[], isRequested: 
     }
     const renderer: StyleThumbnailRenderer = new StyleThumbnailRenderer();
     let isCurrent: boolean = true;
-    for (const styleUrl of styleUrlsKey.split("\n")) {
-      void renderer.render(styleUrl).then((image: string | null) => {
-        if (isCurrent) {
-          setDrawn((previous: ReadonlyMap<string, string | null>) => new Map(previous).set(styleUrl, image));
-        }
-      });
-    }
+    const drawings: readonly Promise<void>[] = styleUrlsKey.split("\n").map(async (styleUrl: string): Promise<void> => {
+      const image: string | null = await renderer.render(styleUrl);
+      if (isCurrent) {
+        setDrawn((previous: ReadonlyMap<string, string | null>) => new Map(previous).set(styleUrl, image));
+      }
+    });
+    // Release the hidden map and its WebGL context as soon as every style is drawn.
+    void Promise.all(drawings).then(() => renderer.dispose());
     return () => {
       isCurrent = false;
       renderer.dispose();

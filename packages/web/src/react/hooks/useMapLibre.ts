@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { ErrorEvent, Map as MapLibreMap, ScaleControl } from "maplibre-gl";
 
+import { AppearanceChange } from "./AppearanceChange.js";
 import { applyTerrain } from "../../terrain/applyTerrain.js";
+import { compareAppearance } from "./compareAppearance.js";
 import { followFirstLoad } from "../../status/followFirstLoad.js";
 import { isBasemapError } from "../../status/isBasemapError.js";
 import type { MapAppearance } from "./MapAppearance.js";
@@ -68,12 +70,12 @@ export function useMapLibre(container: HTMLElement | null, appearance: MapAppear
       return undefined;
     }
     const created: MapLibreMap = map;
-    const isShownBasemapError = (event: MapErrorEvent): boolean =>
-      isBasemapError(event, (sourceId: string) => carrier.isBasemapSource(sourceId), isStyleFetchingRef.current);
+    const isBasemapSource = (sourceId: string): boolean => carrier.isBasemapSource(sourceId);
+    const isShownBasemapError = (event: MapErrorEvent): boolean => isBasemapError(event, isBasemapSource, isStyleFetchingRef.current);
     created.addControl(new ScaleControl(), "bottom-left");
     followFirstLoad(
       created,
-      () => setInstance({ status: MapInstanceStatus.READY, map: created, isBasemapError: isShownBasemapError }),
+      () => setInstance({ status: MapInstanceStatus.READY, map: created, isBasemapError: isShownBasemapError, isBasemapSource }),
       (message: string) => setInstance({ status: MapInstanceStatus.FAILED, message }),
     );
     return () => {
@@ -85,21 +87,32 @@ export function useMapLibre(container: HTMLElement | null, appearance: MapAppear
   const map: MapLibreMap | null = instance.status === MapInstanceStatus.READY ? instance.map : null;
   const { basemap, isGrayscale, terrain, terrainExaggeration }: MapAppearance = appearance;
   useEffect(() => {
-    const shown: MapAppearance = shownRef.current;
+    // While the map loads, `shownRef` keeps what it was created with, so changes made meanwhile are applied here
+    // once it is ready.
     if (map === null) {
       return;
     }
-    const isBasemapReloaded: boolean = shown.basemap !== basemap || shown.isGrayscale !== isGrayscale;
-    const isTerrainChanged: boolean = shown.terrain !== terrain || shown.terrainExaggeration !== terrainExaggeration;
-    shownRef.current = { basemap, isGrayscale, terrain, terrainExaggeration };
-    if (isBasemapReloaded) {
-      // A diff keeps the style loaded, so overlays can be changed while a style basemap's document is fetched, and
-      // keeps images the application added. `transformStyle` reads the terrain from `shownRef` when the diff applies.
-      const style: MapStyle | string = toMapStyle(basemap);
-      isStyleFetchingRef.current = typeof style === "string";
-      map.setStyle(style, { diff: true });
-    } else if (isTerrainChanged) {
-      applyTerrain(map, terrain, terrainExaggeration);
+    const next: MapAppearance = { basemap, isGrayscale, terrain, terrainExaggeration };
+    const change: AppearanceChange = compareAppearance(shownRef.current, next);
+    shownRef.current = next;
+    switch (change) {
+      case AppearanceChange.RELOAD_STYLE: {
+        // A diff keeps the style loaded, so overlays can be changed while a style basemap's document is fetched, and
+        // keeps images the application added. `transformStyle` reads the terrain from `shownRef` when the diff applies.
+        const style: MapStyle | string = toMapStyle(basemap);
+        isStyleFetchingRef.current = typeof style === "string";
+        map.setStyle(style, { diff: true });
+        break;
+      }
+      case AppearanceChange.SWAP_TERRAIN:
+        applyTerrain(map, terrain, terrainExaggeration);
+        break;
+      case AppearanceChange.NONE:
+        break;
+      default: {
+        const unreachable: never = change;
+        throw new TypeError(`Unknown appearance change ${String(unreachable)}`);
+      }
     }
   }, [map, basemap, isGrayscale, terrain, terrainExaggeration]);
 

@@ -12,7 +12,15 @@ const style: MapStyle = {
   sources: {
     tiles: { type: "raster", tiles: ["https://tiles.example/{z}/{x}/{y}.png"] },
     shapes: { type: "geojson", data: { type: "FeatureCollection", features: [] } },
+    routes: { type: "geojson", data: { type: "FeatureCollection", features: [] }, lineMetrics: true },
   },
+  sky: {
+    "sky-color": ["interpolate", ["linear"], ["zoom"], 0, "#88c6fc", 10, "#1e90ff"],
+    "horizon-color": "#ffffff",
+    "fog-color": "rgba(200, 120, 40, 0.5)",
+    "fog-ground-blend": 0.5,
+  },
+  light: { color: "#ffd700", intensity: 0.4 },
   layers: [
     { id: "background", type: "background", paint: { "background-color": "#f8f4f0" } },
     { id: "satellite", type: "raster", source: "tiles" },
@@ -38,6 +46,12 @@ const style: MapStyle = {
       layout: { "text-field": ["get", "name"] },
       paint: { "text-color": "#333", "text-halo-width": 1 },
     },
+    {
+      id: "route",
+      type: "line",
+      source: "routes",
+      paint: { "line-gradient": ["interpolate", ["linear"], ["line-progress"], 0, "blue", 1, "red"] },
+    },
   ],
 };
 
@@ -54,6 +68,23 @@ function evaluateColor(value: unknown, zoom: number, properties: Record<string, 
   const parsed = createExpression(value, "color", colorSpecification);
   assert.equal(parsed.result, "success", JSON.stringify(parsed.value));
   const color: unknown = parsed.value.evaluate({ zoom }, { type: "Point", properties, geometry: [] });
+  assert.ok(color instanceof Color);
+  return color;
+}
+
+/** Line gradients interpolate along the line, so they read the line progress instead of the zoom. */
+const lineGradientSpecification: StylePropertySpecification = {
+  type: "color",
+  "property-type": "color-ramp",
+  expression: { interpolated: true, parameters: ["line-progress"] },
+  transition: false,
+  overridable: false,
+};
+
+function evaluateLineGradient(value: unknown, lineProgress: number): Color {
+  const parsed = createExpression(value, "color", lineGradientSpecification);
+  assert.equal(parsed.result, "success", JSON.stringify(parsed.value));
+  const color: unknown = parsed.value.evaluate({ zoom: 0, lineProgress });
   assert.ok(color instanceof Color);
   return color;
 }
@@ -100,6 +131,23 @@ describe("toGrayscaleStyle", () => {
     assertGray(evaluateColor(roads, 4));
     assertGray(evaluateColor(roads, 14, { class: "motorway" }));
     assert.equal(paintOf("water")["fill-opacity"], 0.8);
+  });
+
+  it("turns line gradients into their luma along the line", () => {
+    const gradient: unknown = paintOf("route")["line-gradient"];
+    assertGray(evaluateLineGradient(gradient, 0));
+    assertGray(evaluateLineGradient(gradient, 0.7));
+  });
+
+  it("turns the colors of the sky and the light into their luma, keeping their other properties", () => {
+    assert.ok(gray.sky !== undefined && gray.light !== undefined);
+    assertGray(evaluateColor(gray.sky["sky-color"], 0));
+    assertGray(evaluateColor(gray.sky["sky-color"], 10));
+    assertGray(evaluateColor(gray.sky["horizon-color"], 0));
+    assertGray(evaluateColor(gray.sky["fog-color"], 0), 0.5);
+    assert.equal(gray.sky["fog-ground-blend"], 0.5);
+    assertGray(evaluateColor(gray.light.color, 0));
+    assert.equal(gray.light.intensity, 0.4);
   });
 
   it("leaves other paint properties and the input style untouched", () => {

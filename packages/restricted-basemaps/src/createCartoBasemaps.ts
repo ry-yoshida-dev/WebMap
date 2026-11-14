@@ -1,4 +1,4 @@
-import { CommercialUse, defineRasterTileBasemap } from "@web-map/core";
+import { BasemapDefinitionError, CommercialUse, defineRasterTileBasemap } from "@web-map/core";
 import type { Attribution, BasemapUsage, RasterTileBasemap } from "@web-map/core";
 
 const attributions: readonly Attribution[] = [
@@ -22,7 +22,7 @@ const usage: BasemapUsage = {
  *
  * @param apiKey - CARTO basemap API key.
  * @returns The Positron, Dark Matter and Voyager basemaps.
- * @throws RangeError When the key is blank.
+ * @throws BasemapDefinitionError When the key is blank.
  */
 export function createCartoBasemaps(apiKey: string): {
   readonly positron: RasterTileBasemap;
@@ -30,7 +30,7 @@ export function createCartoBasemaps(apiKey: string): {
   readonly voyager: RasterTileBasemap;
 } {
   if (apiKey.trim() === "") {
-    throw new RangeError("A CARTO API key must not be blank");
+    throw new BasemapDefinitionError("A CARTO API key must not be blank");
   }
   const define = (id: string, title: string, path: string): RasterTileBasemap =>
     defineRasterTileBasemap({

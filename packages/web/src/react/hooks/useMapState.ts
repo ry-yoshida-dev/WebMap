@@ -1,5 +1,13 @@
 import { useCallback, useSyncExternalStore } from "react";
-import type { Map as MapLibreMap, MapEventType } from "maplibre-gl";
+import type { MapEventType } from "maplibre-gl";
+
+/**
+ * What {@link useMapState} uses of a map's events; a MapLibre map is one.
+ */
+export interface MapStateTarget {
+  on(type: keyof MapEventType, listener: () => void): unknown;
+  off(type: keyof MapEventType, listener: () => void): unknown;
+}
 
 /**
  * Read a value of the map, re-rendering when one of the events fires.
@@ -9,10 +17,10 @@ import type { Map as MapLibreMap, MapEventType } from "maplibre-gl";
  * @param read - Reads the value; must return the same primitive while nothing changed.
  * @returns The current value.
  */
-export function useMapState<TValue extends string | number | boolean>(
-  map: MapLibreMap,
+export function useMapState<TMap extends MapStateTarget, TValue extends string | number | boolean>(
+  map: TMap,
   events: readonly (keyof MapEventType)[],
-  read: (map: MapLibreMap) => TValue,
+  read: (map: TMap) => TValue,
 ): TValue {
   const subscribe = useCallback(
     (notify: () => void): (() => void) => {

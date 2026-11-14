@@ -16,5 +16,7 @@ export type MapInstance =
        * rather than the terrain or the application's overlays.
        */
       readonly isBasemapError: (event: MapErrorEvent) => boolean;
+      /** Whether a source of the map is one of the basemap on screen, rather than the terrain's or an overlay. */
+      readonly isBasemapSource: (sourceId: string) => boolean;
     }
   | { readonly status: MapInstanceStatus.FAILED; readonly message: string };

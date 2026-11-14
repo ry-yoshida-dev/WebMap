@@ -15,6 +15,7 @@ import { MapStyles } from "../styles/MapStyles.js";
 import { MapToolbar } from "../controls/MapToolbar.js";
 import { readViewport } from "../../camera/readViewport.js";
 import { requireTerrainExaggeration } from "../../terrain/requireTerrainExaggeration.js";
+import { useControllableState } from "../hooks/useControllableState.js";
 import { useMapLibre } from "../hooks/useMapLibre.js";
 import { useTileStatus } from "../hooks/useTileStatus.js";
 import type { TileStatus } from "../hooks/TileStatus.js";
@@ -74,19 +75,22 @@ export function WebMap(props: WebMapProps): ReactElement {
   const firstBasemap: Basemap = requireFirstOfUnique(basemaps);
   const labels: MapLabels = useMemo(() => ({ ...defaultMapLabels, ...props.labels }), [props.labels]);
 
-  const [chosenId, setChosenId] = useState<string | undefined>(() => requireKnownId(basemaps, props.initialBasemapId, "Basemap"));
-  const shownId: string | undefined = requireKnownId(basemaps, props.basemapId, "Basemap") ?? chosenId;
+  const [shownId, keepBasemapId] = useControllableState<string | undefined>(requireKnownId(basemaps, props.basemapId, "Basemap"), () =>
+    requireKnownId(basemaps, props.initialBasemapId, "Basemap"),
+  );
   const basemap: Basemap = basemaps.find((candidate: Basemap) => candidate.id === shownId) ?? firstBasemap;
   const terrains: readonly Terrain[] = props.terrains ?? openTerrains;
   requireUniqueTerrains(terrains);
   const terrainExaggeration: number = props.terrainExaggeration ?? 1;
   requireTerrainExaggeration(terrainExaggeration);
-  const [chosenTerrainId, setChosenTerrainId] = useState<string | undefined>(() =>
+  const [terrainId, keepTerrainId] = useControllableState<string | undefined>(requireKnownId(terrains, props.terrainId, "Terrain"), () =>
     requireKnownId(terrains, props.initialTerrainId, "Terrain"),
   );
-  const terrain: Terrain | null = findTerrain(terrains, requireKnownId(terrains, props.terrainId, "Terrain") ?? chosenTerrainId);
-  const [chosenIsTerrainShown, setChosenIsTerrainShown] = useState<boolean>(props.initialIsTerrainShown ?? false);
-  const isTerrainShown: boolean = props.isTerrainShown ?? chosenIsTerrainShown;
+  const terrain: Terrain | null = findTerrain(terrains, terrainId);
+  const [isTerrainShown, keepIsTerrainShown] = useControllableState<boolean>(
+    props.isTerrainShown,
+    () => props.initialIsTerrainShown ?? false,
+  );
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [controlSlot, setControlSlot] = useState<HTMLElement | null>(null);
 
@@ -129,46 +133,37 @@ export function WebMap(props: WebMapProps): ReactElement {
     };
   }, [map]);
 
-  const isBasemapControlled: boolean = props.basemapId !== undefined;
   const onBasemapChange: ((basemap: Basemap) => void) | undefined = props.onBasemapChange;
   const changeBasemap = useCallback(
     (next: Basemap): void => {
       if (!basemaps.some((candidate: Basemap) => candidate.id === next.id)) {
         throw new RangeError(`Basemap ${next.id} is not one of the map's basemaps`);
       }
-      if (!isBasemapControlled) {
-        setChosenId(next.id);
-      }
+      keepBasemapId(next.id);
       onBasemapChange?.(next);
     },
-    [basemaps, isBasemapControlled, onBasemapChange],
+    [basemaps, keepBasemapId, onBasemapChange],
   );
 
-  const isTerrainControlled: boolean = props.terrainId !== undefined;
   const onTerrainChange: ((terrain: Terrain) => void) | undefined = props.onTerrainChange;
   const changeTerrain = useCallback(
     (next: Terrain): void => {
       if (!terrains.some((candidate: Terrain) => candidate.id === next.id)) {
         throw new RangeError(`Terrain ${next.id} is not one of the map's terrains`);
       }
-      if (!isTerrainControlled) {
-        setChosenTerrainId(next.id);
-      }
+      keepTerrainId(next.id);
       onTerrainChange?.(next);
     },
-    [terrains, isTerrainControlled, onTerrainChange],
+    [terrains, keepTerrainId, onTerrainChange],
   );
 
-  const isTerrainShownControlled: boolean = props.isTerrainShown !== undefined;
   const onTerrainShownChange: ((isShown: boolean) => void) | undefined = props.onTerrainShownChange;
   const changeTerrainShown = useCallback(
     (isShown: boolean): void => {
-      if (!isTerrainShownControlled) {
-        setChosenIsTerrainShown(isShown);
-      }
+      keepIsTerrainShown(isShown);
       onTerrainShownChange?.(isShown);
     },
-    [isTerrainShownControlled, onTerrainShownChange],
+    [keepIsTerrainShown, onTerrainShownChange],
   );
 
   const isToolbarShown: boolean = props.isToolbarShown ?? true;
