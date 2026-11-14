@@ -15,3 +15,4 @@ React DOM map, its toolbar and its extension points.
 | [testing](testing) | jsdom and a fake map for the React tests |
 | [icons](icons) | Glyphs of the controls |
 | [styles](styles) | Style sheet and its injection |
+| [clientBoundary.test.ts](clientBoundary.test.ts) | Every module using hooks, context or event handlers is marked `"use client"` |

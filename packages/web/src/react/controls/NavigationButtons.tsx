@@ -1,3 +1,5 @@
+"use client";
+
 import type { ReactElement } from "react";
 import type { Map as MapLibreMap, MapEventType } from "maplibre-gl";
 

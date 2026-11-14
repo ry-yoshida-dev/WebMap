@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { ErrorEvent, Map as MapLibreMap, ScaleControl } from "maplibre-gl";
 

@@ -29,6 +29,8 @@ app's state, pass `basemapId` and update it from `onBasemapChange`. Basemaps and
 building new objects for them on every render reloads nothing. When the first basemap cannot be shown, the map shows
 the error, and choosing another basemap tries again. The types of `@web-map/core` that the props use, such as `Basemap`,
 `Terrain` and `MapViewport`, are exported from this package too.
+Modules using React state, context or events are marked `"use client"`, so React Server Components frameworks such
+as the Next.js App Router can import them; callbacks such as `onMapClick` still have to come from a client component.
 
 `onViewportChange` reports exactly what the map shows, so that another module, such as one printing the map, covers
 the same area: the size in CSS pixels, the corners, and, while the map faces north and is not tilted, the extent as a

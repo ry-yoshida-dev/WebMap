@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { BasemapKind } from "@web-map/core";
 import type { Basemap } from "@web-map/core";

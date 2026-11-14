@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useId, useRef, useState } from "react";
 import type { FocusEvent, KeyboardEvent, ReactElement } from "react";
 import type { Basemap } from "@web-map/core";

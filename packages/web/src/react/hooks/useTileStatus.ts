@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import type { MapSourceDataEvent } from "maplibre-gl";
 import type { Basemap } from "@web-map/core";

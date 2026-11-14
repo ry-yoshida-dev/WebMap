@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import type { ReactElement } from "react";
 import type { Map as MapLibreMap, MapEventType, MapMouseEvent } from "maplibre-gl";
