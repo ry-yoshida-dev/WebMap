@@ -43,6 +43,19 @@ describe("defineRasterTileBasemap", () => {
     );
   });
 
+  it("rejects URLs without a host or with a placeholder in the host", () => {
+    for (const tileUrlTemplate of [
+      "https://:443/{z}/{x}/{y}.png",
+      "https://{s}.tiles.example.com/{z}/{x}/{y}.png",
+      "https:///{z}/{x}/{y}.png",
+    ]) {
+      assert.throws(() => defineRasterTileBasemap({ ...specification, tileUrlTemplate }), BasemapDefinitionError, tileUrlTemplate);
+    }
+    assert.doesNotThrow(() =>
+      defineRasterTileBasemap({ ...specification, tileUrlTemplate: "https://tiles.example.com:8443/{z}/{x}/{y}.png?key=a" }),
+    );
+  });
+
   it("rejects an inverted or fractional zoom range", () => {
     assert.throws(() => defineRasterTileBasemap({ ...specification, minZoom: 10, maxZoom: 5 }), RangeError);
     assert.throws(() => defineRasterTileBasemap({ ...specification, maxZoom: 18.5 }), RangeError);

@@ -16,7 +16,8 @@ import { webMercatorResolution } from "../projection/webMercatorResolution.js";
  * @param width - Width of the map in CSS pixels.
  * @param height - Height of the map in CSS pixels.
  * @returns The camera.
- * @throws RangeError When the extent or a size is invalid, or the camera would leave what Web Mercator can show.
+ * @throws RangeError When the extent or a size is invalid, or the camera would leave what Web Mercator can show, as
+ *   when the map is too small to fit the extent even at the lowest camera zoom, -2.
  */
 export function cameraForExtent(extent: MapExtent, width: number, height: number): MapCamera {
   const { minX, minY, maxX, maxY }: MapExtent = defineMapExtent(extent);

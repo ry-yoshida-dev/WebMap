@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { fromWebMercator, toWebMercator, webMercatorResolution } from "../index.js";
+import { fromWebMercator, MERCATOR_LATITUDE_LIMIT, toWebMercator, webMercatorResolution } from "../index.js";
 
 /** Half the width of the Web Mercator square in meters. */
 const HALF_WORLD: number = Math.PI * 6378137;
@@ -20,6 +20,11 @@ describe("toWebMercator", () => {
 
   it("keeps longitudes past the antimeridian contiguous", () => {
     assert.ok(toWebMercator({ lng: 190, lat: 0 }).x > HALF_WORLD);
+  });
+
+  it("puts the latitude limit on the edge of the square", () => {
+    assert.ok(Math.abs(toWebMercator({ lng: 0, lat: MERCATOR_LATITUDE_LIMIT }).y - HALF_WORLD) < 1e-6);
+    assert.throws(() => toWebMercator({ lng: 0, lat: 85.051129 }), RangeError);
   });
 
   it("rejects latitudes beyond the square", () => {

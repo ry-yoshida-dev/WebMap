@@ -42,7 +42,7 @@ export { toWebMercator } from "./projection/toWebMercator.js";
 export type { WebMercatorPoint } from "./projection/WebMercatorPoint.js";
 export { webMercatorResolution } from "./projection/webMercatorResolution.js";
 export { MERCATOR_LATITUDE_LIMIT } from "./projection/webMercatorSphere.js";
-export { HIGHEST_ZOOM } from "./projection/webMercatorZoom.js";
+export { HIGHEST_ZOOM, LOWEST_CAMERA_ZOOM } from "./projection/webMercatorZoom.js";
 
 export { formatTileUrl } from "./tile/formatTileUrl.js";
 export { tileCenter } from "./tile/tileCenter.js";

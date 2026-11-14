@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { formatTileUrl, gsiBasemaps, nasaGibsBasemaps, tileCenter, tileContaining } from "../index.js";
+import { formatTileUrl, gsiBasemaps, MERCATOR_LATITUDE_LIMIT, nasaGibsBasemaps, tileCenter, tileContaining } from "../index.js";
 
 describe("tileContaining", () => {
   it("finds the tile of a position", () => {
@@ -10,7 +10,7 @@ describe("tileContaining", () => {
   });
 
   it("puts the east and south edges in the last tile", () => {
-    assert.deepEqual(tileContaining({ lng: 180, lat: -85.051129 }, 2), { zoom: 2, x: 3, y: 3 });
+    assert.deepEqual(tileContaining({ lng: 180, lat: -MERCATOR_LATITUDE_LIMIT }, 2), { zoom: 2, x: 3, y: 3 });
   });
 
   it("rejects positions and zooms off the grid", () => {
@@ -29,6 +29,8 @@ describe("tileCenter", () => {
 
   it("rejects tiles off the grid", () => {
     assert.throws(() => tileCenter({ zoom: 1, x: 2, y: 0 }), RangeError);
+    assert.throws(() => tileCenter({ zoom: 25, x: 0, y: 0 }), RangeError);
+    assert.throws(() => tileCenter({ zoom: 2000, x: 0, y: 0 }), RangeError);
   });
 });
 
@@ -40,5 +42,12 @@ describe("formatTileUrl", () => {
 
   it("rejects zooms the basemap does not serve", () => {
     assert.throws(() => formatTileUrl(nasaGibsBasemaps.blueMarble, { zoom: 9, x: 0, y: 0 }), RangeError);
+  });
+
+  it("rejects tiles off the grid", () => {
+    assert.throws(() => formatTileUrl(gsiBasemaps.standard, { zoom: Number.NaN, x: 0, y: 0 }), RangeError);
+    assert.throws(() => formatTileUrl(gsiBasemaps.standard, { zoom: 5.5, x: 0, y: 0 }), RangeError);
+    assert.throws(() => formatTileUrl(gsiBasemaps.standard, { zoom: 5, x: -1, y: 0 }), RangeError);
+    assert.throws(() => formatTileUrl(gsiBasemaps.standard, { zoom: 5, x: 0, y: 32 }), RangeError);
   });
 });

@@ -1,7 +1,7 @@
 import type { MapCamera } from "./MapCamera.js";
 import type { MapCameraSpecification } from "./MapCameraSpecification.js";
 import { MERCATOR_LATITUDE_LIMIT } from "../projection/webMercatorSphere.js";
-import { HIGHEST_ZOOM } from "../projection/webMercatorZoom.js";
+import { HIGHEST_ZOOM, LOWEST_CAMERA_ZOOM } from "../projection/webMercatorZoom.js";
 
 const STEEPEST_PITCH: number = 85;
 
@@ -22,8 +22,8 @@ export function defineMapCamera(specification: MapCameraSpecification): MapCamer
   if (!Number.isFinite(center.lat) || Math.abs(center.lat) > MERCATOR_LATITUDE_LIMIT) {
     throw new RangeError(`Latitude must lie in [-${MERCATOR_LATITUDE_LIMIT}, ${MERCATOR_LATITUDE_LIMIT}], got ${center.lat}`);
   }
-  if (!Number.isFinite(zoom) || zoom < 0 || zoom > HIGHEST_ZOOM) {
-    throw new RangeError(`Zoom must lie in [0, ${HIGHEST_ZOOM}], got ${zoom}`);
+  if (!Number.isFinite(zoom) || zoom < LOWEST_CAMERA_ZOOM || zoom > HIGHEST_ZOOM) {
+    throw new RangeError(`Zoom must lie in [${LOWEST_CAMERA_ZOOM}, ${HIGHEST_ZOOM}], got ${zoom}`);
   }
   if (!Number.isFinite(bearing)) {
     throw new RangeError(`Bearing must be finite, got ${bearing}`);

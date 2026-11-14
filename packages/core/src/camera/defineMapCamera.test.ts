@@ -24,8 +24,13 @@ describe("defineMapCamera", () => {
     assert.throws(() => defineMapCamera({ center: { lng: Number.NaN, lat: 0 }, zoom: 1 }), RangeError);
   });
 
+  it("accepts zooms down to MapLibre's default minimum", () => {
+    assert.equal(defineMapCamera({ center: { lng: 0, lat: 0 }, zoom: -2 }).zoom, -2);
+  });
+
   it("rejects out-of-range zoom and pitch", () => {
-    assert.throws(() => defineMapCamera({ center: { lng: 0, lat: 0 }, zoom: -1 }), RangeError);
+    assert.throws(() => defineMapCamera({ center: { lng: 0, lat: 0 }, zoom: -2.5 }), RangeError);
+    assert.throws(() => defineMapCamera({ center: { lng: 0, lat: 0 }, zoom: 24.5 }), RangeError);
     assert.throws(() => defineMapCamera({ center: { lng: 0, lat: 0 }, zoom: 1, pitch: 90 }), RangeError);
   });
 });

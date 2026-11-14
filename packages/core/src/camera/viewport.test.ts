@@ -4,6 +4,9 @@ import { describe, it } from "node:test";
 import { cameraForExtent, defineMapCamera, defineMapExtent, describeFlatViewport, toWebMercator, webMercatorResolution } from "../index.js";
 import type { MapExtent, WebMercatorPoint } from "../index.js";
 
+/** Half the width of the Web Mercator square in meters. */
+const HALF_WORLD: number = Math.PI * 6378137;
+
 const near = (actual: number, expected: number, tolerance: number = 1e-6): void => {
   assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} is not within ${tolerance} of ${expected}`);
 };
@@ -60,6 +63,36 @@ describe("cameraForExtent", () => {
     near(viewport.extent.minX, 0);
     near(viewport.extent.maxX, 2000);
     near(viewport.extent.maxY - viewport.extent.minY, 2000);
+  });
+
+  it("fits the whole world in a map narrower than the world at zoom 0", () => {
+    const extent = defineMapExtent({ minX: -HALF_WORLD, minY: -HALF_WORLD, maxX: HALF_WORLD, maxY: HALF_WORLD });
+    const camera = cameraForExtent(extent, 256, 256);
+    near(camera.zoom, -1, 1e-9);
+    assert.throws(() => cameraForExtent(extent, 100, 100), RangeError);
+  });
+
+  it("keeps an extent crossing the antimeridian east of it", () => {
+    const extent = defineMapExtent({ minX: HALF_WORLD - 1000, minY: -1000, maxX: HALF_WORLD + 1000, maxY: 1000 });
+    const viewport = describeFlatViewport(cameraForExtent(extent, 200, 200), 200, 200);
+    assert.ok(viewport.extent !== null);
+    near(viewport.extent.minX, extent.minX, 1e-3);
+    near(viewport.extent.maxX, extent.maxX, 1e-3);
+    nearPoint(viewport.corners.topLeft, { x: extent.minX, y: extent.maxY });
+  });
+
+  it("starts a rotated view crossing the antimeridian west of it", () => {
+    const viewport = describeFlatViewport(defineMapCamera({ center: { lng: -180, lat: 0 }, zoom: 10, bearing: 45 }), 200, 200);
+    const xs: readonly number[] = Object.values(viewport.corners).map((corner: WebMercatorPoint) => corner.x);
+    assert.ok(Math.min(...xs) >= -HALF_WORLD);
+    assert.ok(Math.max(...xs) > HALF_WORLD);
+  });
+
+  it("treats a full turn as facing north", () => {
+    const camera = { center: { lng: 0, lat: 0 }, zoom: 3, bearing: 360, pitch: 0 };
+    const viewport = describeFlatViewport(camera, 100, 100);
+    assert.equal(viewport.camera.bearing, 0);
+    assert.ok(viewport.extent !== null);
   });
 
   it("rejects empty extents", () => {
