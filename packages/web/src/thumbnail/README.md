@@ -13,3 +13,4 @@ on a hidden map. All frame the same area around Tokyo.
 | [StyleThumbnailRenderer.ts](StyleThumbnailRenderer.ts) | Drawing style basemaps into images on one hidden map |
 | [Thumbnail.ts](Thumbnail.ts) | A thumbnail and its image |
 | [ThumbnailStatus.ts](ThumbnailStatus.ts) | Pending, ready or failed |
+| [StyleThumbnailRenderer.test.ts](StyleThumbnailRenderer.test.ts) | No hidden container left when the map cannot be created |

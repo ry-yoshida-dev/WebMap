@@ -1,3 +1,6 @@
+// Types of the core package that the props and callbacks below use, so an application can type them from this package.
+export type { Basemap, LngLat, MapCamera, MapExtent, MapViewport, Terrain } from "@web-map/core";
+
 export { readCamera } from "./camera/readCamera.js";
 export { readViewport } from "./camera/readViewport.js";
 
@@ -35,6 +38,7 @@ export type { MapExtentFrameProps } from "./react/extensions/MapExtentFrameProps
 export { TileStatus } from "./react/hooks/TileStatus.js";
 export { useMapContext } from "./react/hooks/useMapContext.js";
 export { useMapState } from "./react/hooks/useMapState.js";
+export type { MapStateTarget } from "./react/hooks/useMapState.js";
 
 export { Icon } from "./react/icons/Icon.js";
 export { IconName } from "./react/icons/IconName.js";

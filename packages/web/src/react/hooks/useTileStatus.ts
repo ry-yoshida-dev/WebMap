@@ -20,7 +20,9 @@ import type { TileStatusSource } from "./TileStatusSource.js";
  */
 export function useTileStatus(instance: TileStatusSource, basemap: Basemap): TileStatus {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [failedBasemap, setFailedBasemap] = useState<Basemap | null>(null);
+  // Basemaps are told apart by id, so a parent building new basemap objects on every render keeps a failure shown.
+  const [failedBasemapId, setFailedBasemapId] = useState<string | null>(null);
+  const basemapId: string = basemap.id;
 
   useEffect(() => {
     if (instance.status !== MapInstanceStatus.READY) {
@@ -30,13 +32,13 @@ export function useTileStatus(instance: TileStatusSource, basemap: Basemap): Til
     const onDataLoading = (): void => setIsLoading(true);
     const onIdle = (): void => setIsLoading(false);
     const onError = (event: MapErrorEvent): void => {
-      if (!isMissingTileError(event.error) && isBasemapError(event)) {
-        setFailedBasemap(basemap);
+      if (!isMissingTileError(event) && isBasemapError(event)) {
+        setFailedBasemapId(basemapId);
       }
     };
     const onSourceData = (event: MapSourceDataEvent): void => {
       if (event.tile !== undefined && isBasemapSource(event.sourceId)) {
-        setFailedBasemap(null);
+        setFailedBasemapId(null);
       }
     };
     map.on("dataloading", onDataLoading);
@@ -49,12 +51,12 @@ export function useTileStatus(instance: TileStatusSource, basemap: Basemap): Til
       map.off("error", onError);
       map.off("sourcedata", onSourceData);
     };
-  }, [instance, basemap]);
+  }, [instance, basemapId]);
 
   if (instance.status !== MapInstanceStatus.READY) {
     return TileStatus.LOADING;
   }
-  if (failedBasemap === basemap) {
+  if (failedBasemapId === basemapId) {
     return TileStatus.FAILED;
   }
   return isLoading ? TileStatus.LOADING : TileStatus.IDLE;

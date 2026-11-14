@@ -79,20 +79,28 @@ export class StyleThumbnailRenderer {
       height: `${STYLE_THUMBNAIL_RENDER_SIZE}px`,
       pointerEvents: "none",
     });
+    // MapLibre sizes its canvas from the container, so the container is in the page before the map is created.
     document.body.append(container);
+    let map: MapLibreMap;
+    try {
+      map = new MapLibreMap({
+        container,
+        style: styleUrl,
+        center: [styleThumbnailCamera.center.lng, styleThumbnailCamera.center.lat],
+        zoom: styleThumbnailCamera.zoom,
+        interactive: false,
+        attributionControl: false,
+        fadeDuration: 0,
+        // One device pixel per CSS pixel: the image is already four times the thumbnail's edge.
+        pixelRatio: 1,
+        canvasContextAttributes: { preserveDrawingBuffer: true },
+      });
+    } catch (error: unknown) {
+      container.remove();
+      throw error;
+    }
     this.container = container;
-    this.map = new MapLibreMap({
-      container,
-      style: styleUrl,
-      center: [styleThumbnailCamera.center.lng, styleThumbnailCamera.center.lat],
-      zoom: styleThumbnailCamera.zoom,
-      interactive: false,
-      attributionControl: false,
-      fadeDuration: 0,
-      // One device pixel per CSS pixel: the image is already four times the thumbnail's edge.
-      pixelRatio: 1,
-      canvasContextAttributes: { preserveDrawingBuffer: true },
-    });
-    return this.map;
+    this.map = map;
+    return map;
   }
 }

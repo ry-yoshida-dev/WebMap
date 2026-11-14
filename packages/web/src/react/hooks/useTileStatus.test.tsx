@@ -9,7 +9,7 @@ import type { Basemap } from "@web-map/core";
 
 import { FakeMap } from "../testing/FakeMap.js";
 import { MapInstanceStatus } from "./MapInstanceStatus.js";
-import { sampleRasterBasemaps } from "../testing/sampleBasemaps.js";
+import { sampleRasterBasemaps, sampleStyleBasemap } from "../testing/sampleBasemaps.js";
 import { TileStatus } from "./TileStatus.js";
 import type { TileStatusSource } from "./TileStatusSource.js";
 import { useTileStatus } from "./useTileStatus.js";
@@ -54,11 +54,37 @@ describe("useTileStatus", () => {
     const map: FakeMap = new FakeMap();
     const { result } = render(map);
     act(() =>
-      map.fire("error", { error: new AJAXError(404, "Not Found", "https://tiles.example/1.png", new Blob()), sourceId: BASEMAP_SOURCE }),
+      map.fire("error", {
+        error: new AJAXError(404, "Not Found", "https://tiles.example/1.png", new Blob()),
+        sourceId: BASEMAP_SOURCE,
+        tile: {},
+      }),
     );
     act(() => map.fire("error", { error: new Error("overlay"), sourceId: "overlay" }));
     assert.equal(result.current, TileStatus.IDLE);
     act(() => map.fire("error", { error: new Error("server"), sourceId: BASEMAP_SOURCE }));
+    assert.equal(result.current, TileStatus.FAILED);
+  });
+
+  it("fails when the style document of the basemap is missing", () => {
+    const map: FakeMap = new FakeMap();
+    // The map counts an error without a source as the basemap's while its style document is fetched.
+    const instance: TileStatusSource = {
+      status: MapInstanceStatus.READY,
+      map,
+      isBasemapError: (event) => event.sourceId === undefined,
+      isBasemapSource: (sourceId: string) => sourceId === BASEMAP_SOURCE,
+    };
+    const { result } = renderHook(() => useTileStatus(instance, sampleStyleBasemap));
+    act(() => map.fire("error", { error: new AJAXError(404, "Not Found", "https://tiles.example/style.json", new Blob()) }));
+    assert.equal(result.current, TileStatus.FAILED);
+  });
+
+  it("keeps a failure when the same basemap comes as a new object", () => {
+    const map: FakeMap = new FakeMap();
+    const { result, rerender } = render(map);
+    act(() => map.fire("error", { error: new Error("server"), sourceId: BASEMAP_SOURCE }));
+    rerender({ shown: { ...sampleRasterBasemaps.first } });
     assert.equal(result.current, TileStatus.FAILED);
   });
 

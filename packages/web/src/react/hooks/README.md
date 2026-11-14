@@ -15,7 +15,7 @@ Hooks binding the MapLibre map to React.
 | [MapLibreOptions.ts](MapLibreOptions.ts) | What the map is created with |
 | [MapInstance.ts](MapInstance.ts) | Lifecycle of the map |
 | [MapInstanceStatus.ts](MapInstanceStatus.ts) | Loading, ready or failed |
-| [MapErrorEvent.ts](MapErrorEvent.ts) | Error event of the map, with the source that failed |
+| [MapErrorEvent.ts](MapErrorEvent.ts) | Error event of the map, with the source and tile that failed |
 | [useControllableState.ts](useControllableState.ts) | A value kept by the application or by the component |
 | [useMapContext.ts](useMapContext.ts) | Services of the enclosing `WebMap` |
 | [useMapState.ts](useMapState.ts) | A map value re-read on events |
@@ -23,9 +23,10 @@ Hooks binding the MapLibre map to React.
 | [TileStatus.ts](TileStatus.ts) | Idle, loading or failed |
 | [TileStatusSource.ts](TileStatusSource.ts) | What tile status follows of a map |
 | [useBasemapThumbnails.ts](useBasemapThumbnails.ts) | Thumbnails of basemaps, drawing style basemaps on request |
-| [compareAppearance.test.ts](compareAppearance.test.ts) | Style reloads and terrain swaps told apart |
+| [useMapLibre.test.tsx](useMapLibre.test.tsx) | Creating the map again after a failure only for another basemap |
+| [compareAppearance.test.ts](compareAppearance.test.ts) | Style reloads and terrain swaps told apart, by id |
 | [useControllableState.test.tsx](useControllableState.test.tsx) | Values kept by the application or by the component |
 | [useMapState.test.tsx](useMapState.test.tsx) | Values re-read on events and listeners removed |
-| [useTileStatus.test.tsx](useTileStatus.test.tsx) | Loading, failures of the basemap only, and recovering from them |
+| [useTileStatus.test.tsx](useTileStatus.test.tsx) | Loading, failures of the basemap and its style only, and recovering from them |
 | [useBasemapThumbnails.test.tsx](useBasemapThumbnails.test.tsx) | Raster tiles, and styles that cannot be drawn reported as failed |
 | [useMapContext.test.tsx](useMapContext.test.tsx) | The error outside a `WebMap` |

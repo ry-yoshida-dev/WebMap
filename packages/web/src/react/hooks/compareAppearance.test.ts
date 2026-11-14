@@ -20,6 +20,11 @@ describe("compareAppearance", () => {
     assert.equal(compareAppearance(shown, { ...shown }), AppearanceChange.NONE);
   });
 
+  it("needs nothing for new objects of the same basemap and terrain", () => {
+    const next: MapAppearance = { ...shown, basemap: { ...shown.basemap }, terrain: { ...gsiTerrains.elevation } };
+    assert.equal(compareAppearance(shown, next), AppearanceChange.NONE);
+  });
+
   it("reloads the style for another basemap or grayscale", () => {
     assert.equal(compareAppearance(shown, { ...shown, basemap: sampleRasterBasemaps.second }), AppearanceChange.RELOAD_STYLE);
     assert.equal(compareAppearance(shown, { ...shown, isGrayscale: true }), AppearanceChange.RELOAD_STYLE);
