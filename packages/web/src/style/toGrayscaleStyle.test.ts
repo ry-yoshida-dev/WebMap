@@ -4,8 +4,8 @@ import { describe, it } from "node:test";
 import { Color, createExpression, validateStyleMin } from "@maplibre/maplibre-gl-style-spec";
 import type { StylePropertySpecification } from "@maplibre/maplibre-gl-style-spec";
 
-import { toGrayscaleStyle } from "../src/style/toGrayscaleStyle.js";
-import type { MapStyle } from "../src/style/MapStyle.js";
+import { toGrayscaleStyle } from "./toGrayscaleStyle.js";
+import type { MapStyle } from "./MapStyle.js";
 
 const style: MapStyle = {
   version: 8,

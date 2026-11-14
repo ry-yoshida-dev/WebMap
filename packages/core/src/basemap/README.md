@@ -24,3 +24,5 @@ What a basemap is: how it is delivered, whom it credits and under which terms it
 | [requireTileRange.ts](requireTileRange.ts) | Checks of a tile template, zoom range and tile size, also of terrains |
 | [requireHttpsUrl.ts](requireHttpsUrl.ts) | Check that a URL is `https` |
 | [BasemapDefinitionError.ts](BasemapDefinitionError.ts) | Error of a malformed basemap or terrain definition |
+| [defineRasterTileBasemap.test.ts](defineRasterTileBasemap.test.ts) | Template placeholders, `https` URLs and zoom ranges |
+| [defineStyleBasemap.test.ts](defineStyleBasemap.test.ts) | Style URLs |

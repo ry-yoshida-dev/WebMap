@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { formatAttributionHtml } from "../src/style/formatAttributionHtml.js";
+import { formatAttributionHtml } from "./formatAttributionHtml.js";
 
 describe("formatAttributionHtml", () => {
   it("links each attribution and separates them", () => {

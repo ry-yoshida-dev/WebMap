@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { formatTileUrl, gsiBasemaps, nasaGibsBasemaps, tileCenter, tileContaining } from "../src/index.js";
+import { formatTileUrl, gsiBasemaps, nasaGibsBasemaps, tileCenter, tileContaining } from "../index.js";
 
 describe("tileContaining", () => {
   it("finds the tile of a position", () => {

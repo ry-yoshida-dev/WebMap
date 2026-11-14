@@ -18,3 +18,5 @@ Positions on the earth and what part of it a map shows.
 | [ViewportCorners.ts](ViewportCorners.ts) | Corners of a viewport |
 | [describeFlatViewport.ts](describeFlatViewport.ts) | Viewport of a map that is not tilted |
 | [cameraForExtent.ts](cameraForExtent.ts) | Camera fitting an extent in a map of a given size |
+| [defineMapCamera.test.ts](defineMapCamera.test.ts) | Coordinate, zoom and pitch ranges, bearing normalization |
+| [viewport.test.ts](viewport.test.ts) | Viewport extents and corners, and cameras restoring extents |

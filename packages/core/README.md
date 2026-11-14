@@ -15,7 +15,6 @@ coordinates are always in range.
 | [src/terrain](src/terrain) | Terrain types and how their tiles encode elevation |
 | [src/catalog](src/catalog) | Open basemaps and terrains by provider, `openBasemaps` and `openTerrains` |
 | [src/tile](src/tile) | Web Mercator tile grid and tile URLs |
-| [test](test) | Definition, camera, catalog and tile tests |
 
 ## Examples
 

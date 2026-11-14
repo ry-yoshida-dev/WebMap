@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 
 import { AJAXError, ErrorEvent } from "maplibre-gl";
 
-import { isBasemapError } from "../src/status/isBasemapError.js";
+import { isBasemapError } from "./isBasemapError.js";
 
 const basemapSources: ReadonlySet<string> = new Set(["openmaptiles"]);
 const isBasemapSource = (sourceId: string): boolean => basemapSources.has(sourceId);

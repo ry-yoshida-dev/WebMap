@@ -4,7 +4,7 @@ import { describe, it } from "node:test";
 import { CommercialUse } from "@web-map/core";
 import type { Basemap } from "@web-map/core";
 
-import { createCartoBasemaps, eoxBasemaps, openStreetMapBasemaps } from "../src/index.js";
+import { createCartoBasemaps, eoxBasemaps, openStreetMapBasemaps } from "./index.js";
 
 describe("restricted basemaps", () => {
   it("state a restriction and its conditions for every basemap", () => {

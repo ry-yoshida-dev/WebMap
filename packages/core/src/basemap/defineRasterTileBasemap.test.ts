@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { BasemapDefinitionError, BasemapKind, CommercialUse, defineRasterTileBasemap } from "../src/index.js";
-import type { RasterTileBasemapSpecification } from "../src/index.js";
+import { BasemapDefinitionError, BasemapKind, CommercialUse, defineRasterTileBasemap } from "../index.js";
+import type { RasterTileBasemapSpecification } from "../index.js";
 
 const specification: RasterTileBasemapSpecification = {
   id: "example",

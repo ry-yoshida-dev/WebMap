@@ -13,3 +13,4 @@ shown. Attribution and terms share the types of [basemap](../basemap).
 | [TerrainEncoding.ts](TerrainEncoding.ts) | Terrarium, Terrain-RGB or GSI elevation tiles |
 | [defineTerrain.ts](defineTerrain.ts) | Validated terrain |
 | [TerrainSpecification.ts](TerrainSpecification.ts) | Input of `defineTerrain` |
+| [defineTerrain.test.ts](defineTerrain.test.ts) | Terrain definitions and the terrain catalog |

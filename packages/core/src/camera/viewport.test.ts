@@ -1,15 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import {
-  cameraForExtent,
-  defineMapCamera,
-  defineMapExtent,
-  describeFlatViewport,
-  toWebMercator,
-  webMercatorResolution,
-} from "../src/index.js";
-import type { MapExtent, WebMercatorPoint } from "../src/index.js";
+import { cameraForExtent, defineMapCamera, defineMapExtent, describeFlatViewport, toWebMercator, webMercatorResolution } from "../index.js";
+import type { MapExtent, WebMercatorPoint } from "../index.js";
 
 const near = (actual: number, expected: number, tolerance: number = 1e-6): void => {
   assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} is not within ${tolerance} of ${expected}`);

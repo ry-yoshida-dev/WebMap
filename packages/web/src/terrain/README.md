@@ -15,3 +15,4 @@ MapLibre cannot decode by itself.
 | [gsiElevationProtocol.ts](gsiElevationProtocol.ts) | MapLibre protocol loading GSI elevation tiles as Terrarium |
 | [gsiElevationScheme.ts](gsiElevationScheme.ts) | URL scheme of that protocol |
 | [gsiToTerrarium.ts](gsiToTerrarium.ts) | Re-encoding GSI elevation pixels as Terrarium |
+| [terrain.test.ts](terrain.test.ts) | GSI elevation re-encoding, terrain sources, terrains kept across basemap switches and swapped on a loaded map |

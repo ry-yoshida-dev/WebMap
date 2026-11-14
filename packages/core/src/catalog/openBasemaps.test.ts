@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { CommercialUse, openBasemaps } from "../src/index.js";
+import { CommercialUse, openBasemaps } from "../index.js";
 
 describe("openBasemaps", () => {
   it("has unique ids", () => {

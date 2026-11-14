@@ -12,7 +12,6 @@ menu. Install it only if your use complies with the terms of the basemaps you ta
 | Component | Responsibility |
 |-----------|----------------|
 | [src](src) | Restricted basemaps by provider |
-| [test](test) | Checks that every basemap states its restriction |
 
 ## Examples
 

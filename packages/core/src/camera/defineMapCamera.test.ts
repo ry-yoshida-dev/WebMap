@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { defineMapCamera } from "../src/index.js";
+import { defineMapCamera } from "../index.js";
 
 describe("defineMapCamera", () => {
   it("defaults bearing and pitch to zero", () => {

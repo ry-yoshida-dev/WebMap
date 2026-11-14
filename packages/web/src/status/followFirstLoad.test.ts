@@ -3,8 +3,8 @@ import { describe, it } from "node:test";
 
 import { ErrorEvent } from "maplibre-gl";
 
-import { followFirstLoad } from "../src/status/followFirstLoad.js";
-import type { FirstLoadTarget } from "../src/status/followFirstLoad.js";
+import { followFirstLoad } from "./followFirstLoad.js";
+import type { FirstLoadTarget } from "./followFirstLoad.js";
 
 class FakeMap implements FirstLoadTarget {
   private readonly listeners: Map<string, Set<(event: ErrorEvent) => void>> = new Map();

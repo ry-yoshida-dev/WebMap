@@ -17,3 +17,4 @@ terms are in [docs/basemaps.md](../../../../docs/basemaps.md).
 | [gsiTerrains.ts](gsiTerrains.ts) | Geospatial Information Authority of Japan elevation tiles |
 | [mapzenTerrains.ts](mapzenTerrains.ts) | Worldwide Mapzen Terrain Tiles |
 | [openTerrains.ts](openTerrains.ts) | Both terrains, GSI first |
+| [openBasemaps.test.ts](openBasemaps.test.ts) | Unique ids and unrestricted terms of the catalog |

@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { BasemapDefinitionError, CommercialUse, defineTerrain, openTerrains, TerrainEncoding } from "../src/index.js";
-import type { TerrainSpecification } from "../src/index.js";
+import { BasemapDefinitionError, CommercialUse, defineTerrain, openTerrains, TerrainEncoding } from "../index.js";
+import type { TerrainSpecification } from "../index.js";
 
 const specification: TerrainSpecification = {
   id: "example-dem",

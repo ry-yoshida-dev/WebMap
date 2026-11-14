@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { OverlayCarrier } from "../src/style/OverlayCarrier.js";
-import type { MapStyle } from "../src/style/MapStyle.js";
-import { OverlayConflictError } from "../src/style/OverlayConflictError.js";
+import { OverlayCarrier } from "./OverlayCarrier.js";
+import type { MapStyle } from "./MapStyle.js";
+import { OverlayConflictError } from "./OverlayConflictError.js";
 
 function rasterStyle(id: string): MapStyle {
   return {

@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { BasemapDefinitionError, BasemapKind, CommercialUse, defineStyleBasemap } from "../src/index.js";
-import type { StyleBasemapSpecification } from "../src/index.js";
+import { BasemapDefinitionError, BasemapKind, CommercialUse, defineStyleBasemap } from "../index.js";
+import type { StyleBasemapSpecification } from "../index.js";
 
 const specification: StyleBasemapSpecification = {
   id: "example-style",

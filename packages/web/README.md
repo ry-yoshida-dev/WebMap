@@ -48,7 +48,6 @@ of the map; `cameraForExtent` from `@web-map/core` brings the range back into vi
 | [src/camera](src/camera) | Reading the camera of a MapLibre map |
 | [src/status](src/status) | Following a map's first load, and telling the basemap's failures from others and from missing coverage |
 | [src/thumbnail](src/thumbnail) | Previews of basemaps: a tile of a raster basemap, or a style drawn on a hidden map |
-| [test](test) | Style conversion, grayscale, attribution escaping, overlay carrying, error classification and terrain swapping tests |
 
 ## Examples
 

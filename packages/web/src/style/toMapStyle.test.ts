@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 
 import { gsiBasemaps, openFreeMapBasemaps } from "@web-map/core";
 
-import { RASTER_BASEMAP_ID, toMapStyle } from "../src/style/toMapStyle.js";
+import { RASTER_BASEMAP_ID, toMapStyle } from "./toMapStyle.js";
 
 describe("toMapStyle", () => {
   it("builds a raster style with the tile range and attribution", () => {

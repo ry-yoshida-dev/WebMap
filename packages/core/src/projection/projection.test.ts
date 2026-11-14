@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { fromWebMercator, toWebMercator, webMercatorResolution } from "../src/index.js";
+import { fromWebMercator, toWebMercator, webMercatorResolution } from "../index.js";
 
 /** Half the width of the Web Mercator square in meters. */
 const HALF_WORLD: number = Math.PI * 6378137;
