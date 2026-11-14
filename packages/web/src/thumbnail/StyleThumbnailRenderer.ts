@@ -1,6 +1,7 @@
 import { Map as MapLibreMap } from "maplibre-gl";
 
-import { STYLE_THUMBNAIL_RENDER_SIZE, styleThumbnailCamera } from "./thumbnailView.js";
+import { STYLE_THUMBNAIL_RENDER_SIZE } from "./thumbnailView.js";
+import type { ThumbnailCamera } from "./thumbnailView.js";
 
 /** Longest wait for a style and its tiles before drawing what has arrived. */
 const RENDER_TIMEOUT_MILLISECONDS: number = 10_000;
@@ -22,11 +23,12 @@ export class StyleThumbnailRenderer {
    * Draw a style once the styles requested before it are done.
    *
    * @param styleUrl - URL of the style document.
+   * @param camera - Where to draw it.
    * @returns A PNG data URL, or null when the style could not be loaded, the hidden map could not be created, as
    *   when no WebGL context is left, or the renderer was disposed. It never rejects.
    */
-  render(styleUrl: string): Promise<string | null> {
-    const drawing: Promise<string | null> = this.queue.then(() => this.draw(styleUrl)).catch(() => null);
+  render(styleUrl: string, camera: ThumbnailCamera): Promise<string | null> {
+    const drawing: Promise<string | null> = this.queue.then(() => this.draw(styleUrl, camera)).catch(() => null);
     this.queue = drawing;
     return drawing;
   }
@@ -40,11 +42,11 @@ export class StyleThumbnailRenderer {
     this.container = null;
   }
 
-  private async draw(styleUrl: string): Promise<string | null> {
+  private async draw(styleUrl: string, camera: ThumbnailCamera): Promise<string | null> {
     if (this.isDisposed) {
       return null;
     }
-    const map: MapLibreMap = this.showStyle(styleUrl);
+    const map: MapLibreMap = this.showStyle(styleUrl, camera);
     const isIdle: boolean = await new Promise<boolean>((resolve: (isIdle: boolean) => void) => {
       const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
         map.off("idle", onIdle);
@@ -63,8 +65,10 @@ export class StyleThumbnailRenderer {
     return map.getCanvas().toDataURL("image/png");
   }
 
-  private showStyle(styleUrl: string): MapLibreMap {
+  private showStyle(styleUrl: string, camera: ThumbnailCamera): MapLibreMap {
+    const center: [number, number] = [camera.center.lng, camera.center.lat];
     if (this.map !== null) {
+      this.map.jumpTo({ center, zoom: camera.zoom });
       this.map.setStyle(styleUrl, { diff: false });
       return this.map;
     }
@@ -86,8 +90,8 @@ export class StyleThumbnailRenderer {
       map = new MapLibreMap({
         container,
         style: styleUrl,
-        center: [styleThumbnailCamera.center.lng, styleThumbnailCamera.center.lat],
-        zoom: styleThumbnailCamera.zoom,
+        center,
+        zoom: camera.zoom,
         interactive: false,
         attributionControl: false,
         fadeDuration: 0,

@@ -10,6 +10,7 @@ import { Icon } from "../icons/Icon.js";
 import { IconName } from "../icons/IconName.js";
 import type { Thumbnail } from "../../thumbnail/Thumbnail.js";
 import { useBasemapThumbnails } from "../hooks/useBasemapThumbnails.js";
+import { DEFAULT_THUMBNAIL_CENTER } from "../../thumbnail/thumbnailView.js";
 
 /** Room kept between the panel and the edge of the map. */
 const PANEL_MARGIN: number = 8;
@@ -37,17 +38,22 @@ function countColumns(list: HTMLElement): number {
  * another, above or below the button, whichever side of the map has more room. Arrow keys move between thumbnails, Enter chooses,
  * and Escape, a click outside or tabbing away closes the panel.
  *
- * @param props - Basemaps, the one on screen, the change handler and labels.
+ * @param props - Basemaps, the one on screen, the change handler, labels and where thumbnails are centered.
  * @returns The button and, while open, the panel.
+ * @throws RangeError When the thumbnail center is outside Web Mercator.
  */
-export function BasemapPicker({ basemaps, basemap, onChange, labels }: BasemapPickerProps): ReactElement {
+export function BasemapPicker({ basemaps, basemap, onChange, labels, thumbnailCenter }: BasemapPickerProps): ReactElement {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasOpened, setHasOpened] = useState<boolean>(false);
   const [panelPlacement, setPanelPlacement] = useState<PanelPlacement | null>(null);
   const rootRef: { current: HTMLDivElement | null } = useRef(null);
   const triggerRef: { current: HTMLButtonElement | null } = useRef(null);
   const listId: string = useId();
-  const thumbnailOf: (basemap: Basemap) => Thumbnail = useBasemapThumbnails(basemaps, hasOpened);
+  const thumbnailOf: (basemap: Basemap) => Thumbnail = useBasemapThumbnails(
+    basemaps,
+    hasOpened,
+    thumbnailCenter ?? DEFAULT_THUMBNAIL_CENTER,
+  );
 
   useEffect(() => {
     if (!isOpen) {

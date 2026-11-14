@@ -1,4 +1,4 @@
-import type { Basemap } from "@web-map/core";
+import type { Basemap, LngLat } from "@web-map/core";
 
 import type { MapLabels } from "../map/MapLabels.js";
 
@@ -10,4 +10,6 @@ export interface BasemapPickerProps {
   readonly basemap: Basemap;
   readonly onChange: (basemap: Basemap) => void;
   readonly labels: MapLabels;
+  /** Position every thumbnail shows; Tokyo when omitted. Must lie within Web Mercator. */
+  readonly thumbnailCenter?: LngLat;
 }

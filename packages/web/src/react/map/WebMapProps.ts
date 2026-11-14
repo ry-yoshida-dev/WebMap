@@ -76,6 +76,11 @@ export interface WebMapProps {
    * from the exported ones and {@link useMapContext}.
    */
   readonly isToolbarShown?: boolean;
+  /**
+   * Position the basemap menu's thumbnails show; Tokyo, which every bundled basemap covers, when omitted. Set it within
+   * the area of the application's own basemaps. Must lie within Web Mercator.
+   */
+  readonly thumbnailCenter?: LngLat;
   /** Text overriding the English defaults. */
   readonly labels?: Partial<MapLabels>;
   readonly className?: string;

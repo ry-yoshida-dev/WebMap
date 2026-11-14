@@ -1,5 +1,5 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
-import type { Basemap, Terrain } from "@web-map/core";
+import type { Basemap, LngLat, Terrain } from "@web-map/core";
 
 import type { MapLabels } from "./MapLabels.js";
 import type { TileStatus } from "../hooks/TileStatus.js";
@@ -47,6 +47,8 @@ export interface MapContextValue {
   readonly tileStatus: TileStatus;
   /** Text of the controls, with the map's overrides applied. */
   readonly labels: MapLabels;
+  /** Position the basemap menu's thumbnails show, to hand to a {@link BasemapPicker} of the application's own. */
+  readonly thumbnailCenter: LngLat;
   /** Element of the toolbar that {@link MapControlSlot} renders into, or null before it mounts or while the toolbar is hidden. */
   readonly controlSlot: HTMLElement | null;
 }

@@ -1,5 +1,5 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
-import type { Basemap, Terrain } from "@web-map/core";
+import type { Basemap, LngLat, Terrain } from "@web-map/core";
 
 import type { MapLabels } from "../map/MapLabels.js";
 import type { TileStatus } from "../hooks/TileStatus.js";
@@ -20,6 +20,8 @@ export interface MapToolbarProps {
   readonly onTerrainShownChange: (isShown: boolean) => void;
   readonly tileStatus: TileStatus;
   readonly labels: MapLabels;
+  /** Position the basemap menu's thumbnails show. */
+  readonly thumbnailCenter: LngLat;
   /** Receives the element extensions render their controls into. */
   readonly slotRef: (element: HTMLElement | null) => void;
 }

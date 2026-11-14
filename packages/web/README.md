@@ -7,7 +7,8 @@ which opens a panel of thumbnails, with a notice for restricted terms, the 3D te
 and failure status, and zoom and north buttons. Attribution and a scale bar sit on the map. Children extend it: they
 draw on the MapLibre map from `useMapContext`, and their overlays are carried onto the next basemap when the user
 switches. Give overlays ids no basemap uses: an overlay sharing an id with the next basemap's sources or layers is
-left off it and reported as an `OverlayConflictError` `error` event of the map. The map's style stays loaded while the basemap changes, so overlays can be updated at any time, and images
+left off it and reported as an `OverlayConflictError` `error` event of the map. The menu's thumbnails show the area
+around Tokyo, which every bundled basemap covers; set `thumbnailCenter` to a place your own basemaps cover. The map's style stays loaded while the basemap changes, so overlays can be updated at any time, and images
 added with `map.addImage` are kept. Raster basemaps have no glyphs of their own: an overlay with text over a raster
 basemap shown first needs `map.setGlyphs`, and glyphs a previous basemap brought are kept while a raster basemap is
 shown. Set `isGrayscale` to show the basemap in shades of gray so overlays stand out; overlays, sprite icons and

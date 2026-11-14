@@ -3,7 +3,8 @@
 ## Overview
 
 Small previews of basemaps for the basemap menu: a raster basemap shows one of its tiles, and a style basemap is drawn
-on a hidden map. All frame the same area around Tokyo.
+on a hidden map. All frame the same area, around Tokyo unless
+the map is given another `thumbnailCenter`.
 
 ## Components
 

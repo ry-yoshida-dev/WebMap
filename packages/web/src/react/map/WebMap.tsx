@@ -4,7 +4,7 @@ import { useCallback, useEffectEvent, useEffect, useMemo, useState } from "react
 import type { ReactElement } from "react";
 import type { Map as MapLibreMap, MapMouseEvent } from "maplibre-gl";
 import { defineMapCamera, openBasemaps, openTerrains } from "@web-map/core";
-import type { Basemap, MapCamera, Terrain } from "@web-map/core";
+import type { Basemap, LngLat, MapCamera, Terrain } from "@web-map/core";
 
 import { defaultMapLabels } from "./defaultMapLabels.js";
 import { MapContext } from "./MapContext.js";
@@ -17,6 +17,7 @@ import { MapStyles } from "../styles/MapStyles.js";
 import { MapToolbar } from "../controls/MapToolbar.js";
 import { readViewport } from "../../camera/readViewport.js";
 import { requireTerrainExaggeration } from "../../terrain/requireTerrainExaggeration.js";
+import { DEFAULT_THUMBNAIL_CENTER, requireThumbnailCenter } from "../../thumbnail/thumbnailView.js";
 import { useControllableState } from "../hooks/useControllableState.js";
 import { useMapLibre } from "../hooks/useMapLibre.js";
 import { useTileStatus } from "../hooks/useTileStatus.js";
@@ -70,7 +71,8 @@ function findTerrain(terrains: readonly Terrain[], id: string | undefined): Terr
  * @param props - Basemaps, initial view, callbacks and presentation.
  * @returns The map element.
  * @throws RangeError When `basemaps` is empty or has duplicate ids, `terrains` has duplicate ids, a basemap or
- *   terrain id given is not among them, or the terrain exaggeration is negative.
+ *   terrain id given is not among them, the terrain exaggeration is negative, or the thumbnail center is outside
+ *   Web Mercator.
  */
 export function WebMap(props: WebMapProps): ReactElement {
   const basemaps: readonly Basemap[] = props.basemaps ?? openBasemaps;
@@ -85,6 +87,8 @@ export function WebMap(props: WebMapProps): ReactElement {
   requireUniqueTerrains(terrains);
   const terrainExaggeration: number = props.terrainExaggeration ?? 1;
   requireTerrainExaggeration(terrainExaggeration);
+  const thumbnailCenter: LngLat = props.thumbnailCenter ?? DEFAULT_THUMBNAIL_CENTER;
+  requireThumbnailCenter(thumbnailCenter);
   const [terrainId, keepTerrainId] = useControllableState<string | undefined>(requireKnownId(terrains, props.terrainId, "Terrain"), () =>
     requireKnownId(terrains, props.initialTerrainId, "Terrain"),
   );
@@ -185,6 +189,7 @@ export function WebMap(props: WebMapProps): ReactElement {
             changeTerrainShown,
             tileStatus,
             labels,
+            thumbnailCenter,
             controlSlot: isToolbarShown ? controlSlot : null,
           },
     [
@@ -199,6 +204,7 @@ export function WebMap(props: WebMapProps): ReactElement {
       changeTerrainShown,
       tileStatus,
       labels,
+      thumbnailCenter,
       controlSlot,
       isToolbarShown,
     ],
@@ -228,6 +234,7 @@ export function WebMap(props: WebMapProps): ReactElement {
           onTerrainShownChange={changeTerrainShown}
           tileStatus={tileStatus}
           labels={labels}
+          thumbnailCenter={thumbnailCenter}
           slotRef={setControlSlot}
         />
       ) : null}

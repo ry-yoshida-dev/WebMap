@@ -26,7 +26,13 @@ export function MapToolbar(props: MapToolbarProps): ReactElement {
   const { map, basemaps, basemap, onBasemapChange, terrain, labels, slotRef }: MapToolbarProps = props;
   return (
     <div className="wmap-toolbar">
-      <BasemapPicker basemaps={basemaps} basemap={basemap} onChange={onBasemapChange} labels={labels} />
+      <BasemapPicker
+        basemaps={basemaps}
+        basemap={basemap}
+        onChange={onBasemapChange}
+        labels={labels}
+        thumbnailCenter={props.thumbnailCenter}
+      />
       <UsageNotice usage={basemap.usage} labels={labels} />
       {terrain === null ? null : (
         <span className="wmap-terrain">
