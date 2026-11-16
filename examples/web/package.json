@@ -1,7 +1,7 @@
 {
   "name": "@web-map/example-web",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,9 +10,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@web-map/core": "0.1.0",
-    "@web-map/restricted-basemaps": "0.1.0",
-    "@web-map/web": "0.1.0",
+    "@web-map/core": "0.1.1",
+    "@web-map/restricted-basemaps": "0.1.1",
+    "@web-map/web": "0.1.1",
     "maplibre-gl": "^6.16.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"

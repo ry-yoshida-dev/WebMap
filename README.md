@@ -23,7 +23,7 @@ separate, optional package. See [docs/basemaps.md](docs/basemaps.md) for each on
 
 ## Installation
 
-The packages are not on the npm registry. Pushing a tag such as `v0.1.0` makes GitHub Actions attach their tarballs to
+The packages are not on the npm registry. Pushing a tag such as `v0.1.1` makes GitHub Actions attach their tarballs to
 a GitHub Release, and an app depends on those URLs. `@web-map/web` depends on `@web-map/core` by version, which npm
 would look up in the registry, so the app also depends on `@web-map/core` itself and makes every package use that copy
 with an `overrides` entry:
@@ -31,8 +31,8 @@ with an `overrides` entry:
 ```json
 {
   "dependencies": {
-    "@web-map/core": "https://github.com/ry-yoshida-dev/WebMap/releases/download/v0.1.0/web-map-core-0.1.0.tgz",
-    "@web-map/web": "https://github.com/ry-yoshida-dev/WebMap/releases/download/v0.1.0/web-map-web-0.1.0.tgz",
+    "@web-map/core": "https://github.com/ry-yoshida-dev/WebMap/releases/download/v0.1.1/web-map-core-0.1.1.tgz",
+    "@web-map/web": "https://github.com/ry-yoshida-dev/WebMap/releases/download/v0.1.1/web-map-web-0.1.1.tgz",
     "maplibre-gl": "^6.16.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
@@ -44,7 +44,7 @@ with an `overrides` entry:
 ```
 
 `react`, `react-dom` and `maplibre-gl` are peer dependencies. Add `@web-map/restricted-basemaps` the same way
-(`web-map-restricted-basemaps-0.1.0.tgz`) only if your use complies with the terms of the basemaps you take from it
+(`web-map-restricted-basemaps-0.1.1.tgz`) only if your use complies with the terms of the basemaps you take from it
 ([docs/basemaps.md](docs/basemaps.md#restricted-basemaps)). To build the tarballs yourself, run `npm install`,
 `npm run build` and `npm pack --workspace packages/core --workspace packages/web`.
 

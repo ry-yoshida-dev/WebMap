@@ -1,6 +1,6 @@
 {
   "name": "@web-map/restricted-basemaps",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Optional WebMap basemaps whose terms restrict commercial use or require a key.",
   "license": "MIT",
   "repository": {
@@ -31,6 +31,6 @@
     "test": "node --import tsx --test \"src/**/*.test.ts\""
   },
   "dependencies": {
-    "@web-map/core": "0.1.0"
+    "@web-map/core": "0.1.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@web-map/web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React DOM map view showing the basemaps of WebMap on MapLibre GL JS.",
   "license": "MIT",
   "repository": {
@@ -33,7 +33,7 @@
     "test": "node --import tsx --test \"src/**/*.test.ts\" \"src/**/*.test.tsx\""
   },
   "dependencies": {
-    "@web-map/core": "0.1.0"
+    "@web-map/core": "0.1.1"
   },
   "peerDependencies": {
     "maplibre-gl": "^6.16.0",
