@@ -17,6 +17,7 @@ import { OverlayCarrier } from "../../style/OverlayCarrier.js";
 import { registerGsiElevationProtocol } from "../../terrain/gsiElevationProtocol.js";
 import { toGrayscaleStyle } from "../../style/toGrayscaleStyle.js";
 import { toMapStyle } from "../../style/toMapStyle.js";
+import { withDefaultGlyphs } from "../../style/withDefaultGlyphs.js";
 import { withTerrain } from "../../style/withTerrain.js";
 import type { MapStyle } from "../../style/MapStyle.js";
 
@@ -32,7 +33,7 @@ import type { MapStyle } from "../../style/MapStyle.js";
  *
  * @param container - Element the map fills, or null before it mounts.
  * @param appearance - Basemap, grayscale and terrain to show; the map is created with the first one given.
- * @param options - Camera and hash setting the map starts with.
+ * @param options - Camera, hash setting and default glyphs the map starts with.
  * @returns The map's lifecycle; failed when the map cannot be created or its first style cannot be loaded, until
  *   another basemap or grayscale setting is chosen.
  */
@@ -51,7 +52,7 @@ export function useMapLibre(container: HTMLElement | null, appearance: MapAppear
     if (container === null) {
       return undefined;
     }
-    const { camera, isHashSynced }: MapLibreOptions = initialOptionsRef.current;
+    const { camera, isHashSynced, glyphsUrl }: MapLibreOptions = initialOptionsRef.current;
     registerGsiElevationProtocol();
     let map: MapLibreMap | null = null;
     const carrier: OverlayCarrier = new OverlayCarrier((error: Error) => map?.fire(new ErrorEvent(error)));
@@ -72,7 +73,8 @@ export function useMapLibre(container: HTMLElement | null, appearance: MapAppear
         transformStyle: (previous, next) => {
           isStyleFetchingRef.current = false;
           const { isGrayscale, terrain, terrainExaggeration }: MapAppearance = shownRef.current;
-          return withTerrain(carrier.carry(previous, isGrayscale ? toGrayscaleStyle(next) : next), terrain, terrainExaggeration);
+          const basemapStyle: MapStyle = withDefaultGlyphs(isGrayscale ? toGrayscaleStyle(next) : next, glyphsUrl);
+          return withTerrain(carrier.carry(previous, basemapStyle), terrain, terrainExaggeration);
         },
       });
     } catch (error: unknown) {

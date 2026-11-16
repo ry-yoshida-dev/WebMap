@@ -12,6 +12,6 @@ holds the React DOM map built on them.
 | [camera](camera) | Reading the camera and the viewport of a MapLibre map |
 | [react](react) | React DOM map and its extension points |
 | [status](status) | Following a map's first load, and telling the basemap's failures from others and from missing coverage |
-| [style](style) | Basemaps to MapLibre styles, terrain, attribution HTML and carrying overlays across styles |
+| [style](style) | Basemaps to MapLibre styles, terrain, default glyphs, attribution HTML and carrying overlays across styles |
 | [terrain](terrain) | Terrains to MapLibre elevation sources, including GSI elevation tiles |
 | [thumbnail](thumbnail) | Previews of basemaps for the basemap menu |

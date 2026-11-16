@@ -35,6 +35,13 @@ describe("WebMap", () => {
     assert.deepEqual(rootClasses(MapColorScheme.DARK), ["wmap-root", "wmap-dark", "app-map"]);
   });
 
+  it("rejects glyphs without a font stack or range", () => {
+    assert.throws(
+      () => render(<WebMap basemaps={[sampleRasterBasemaps.first]} terrains={[]} glyphsUrl="https://fonts.example/glyphs.pbf" />),
+      RangeError,
+    );
+  });
+
   it("rejects a thumbnail center outside Web Mercator", () => {
     assert.throws(
       () => render(<WebMap basemaps={[sampleRasterBasemaps.first]} terrains={[]} thumbnailCenter={{ lng: 0, lat: 89 }} />),

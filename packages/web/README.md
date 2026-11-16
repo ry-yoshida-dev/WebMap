@@ -10,9 +10,8 @@ switches. Give overlays ids no basemap uses: an overlay sharing an id with the n
 left off it and reported as an `OverlayConflictError` `error` event of the map. Overlays are carried above all of the next
 basemap's layers, so one placed beneath the basemap's labels with `beforeId` ends up over them after a switch. The menu's thumbnails show the area
 around Tokyo, which every bundled basemap covers; set `thumbnailCenter` to a place your own basemaps cover. The map's style stays loaded while the basemap changes, so overlays can be updated at any time, and images
-added with `map.addImage` are kept. Raster basemaps have no glyphs of their own: an overlay with text over a raster
-basemap shown first needs `map.setGlyphs`, and glyphs a previous basemap brought are kept while a raster basemap is
-shown. Set `isGrayscale` to show the basemap in shades of gray so overlays stand out; overlays, sprite icons and
+added with `map.addImage` are kept. Raster basemaps have no glyphs of their own: give `glyphsUrl`, with `{fontstack}` and `{range}`, so an overlay with
+text renders over every basemap that has none, raster basemaps and no basemap included, from the first style on. Set `isGrayscale` to show the basemap in shades of gray so overlays stand out; overlays, sprite icons and
 colors written as legacy `stops` functions keep their colors. The toolbar follows the system's light or dark
 preference; set `colorScheme` to `MapColorScheme.LIGHT` or `MapColorScheme.DARK` to follow the app's own setting.
 
@@ -22,6 +21,10 @@ basemap can be shown over either. `terrains`, `terrainId` and `onTerrainChange` 
 and `isTerrainShown`, `initialIsTerrainShown` and `onTerrainShownChange` do the same for the button; 3D terrain starts
 off. The terrain stays when the basemap changes. To stand 3D objects on the ground, read the height with
 `map.queryTerrainElevation`, which includes `terrainExaggeration` and returns null while 3D terrain is off.
+
+The map's style is a complete document: `map.getStyle()` holds the basemap, its grayscale, the terrain and the
+overlays, so a second map created from it, as for rendering a print at a higher resolution, shows the same, provided
+the page has created a `WebMap` so the GSI elevation protocol is registered.
 
 Offer `noBasemap` from `@web-map/core` among the `basemaps` to let users see their data alone: it has an empty swatch in
 the menu and no credit or terms. A basemap a user added by an address, with `defineRasterTileBasemap`, may be a WMS

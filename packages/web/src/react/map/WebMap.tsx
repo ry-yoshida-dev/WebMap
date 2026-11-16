@@ -17,6 +17,7 @@ import { MapColorScheme } from "../styles/MapColorScheme.js";
 import { MapStyles } from "../styles/MapStyles.js";
 import { MapToolbar } from "../controls/MapToolbar.js";
 import { readViewport } from "../../camera/readViewport.js";
+import { requireGlyphsUrl } from "../../style/requireGlyphsUrl.js";
 import { requireTerrainExaggeration } from "../../terrain/requireTerrainExaggeration.js";
 import { DEFAULT_THUMBNAIL_CENTER, requireThumbnailCenter } from "../../thumbnail/thumbnailView.js";
 import { useControllableState } from "../hooks/useControllableState.js";
@@ -78,8 +79,8 @@ function findTerrain(terrains: readonly Terrain[], id: string | undefined): Terr
  * @param props - Basemaps, initial view, callbacks and presentation.
  * @returns The map element.
  * @throws RangeError When `basemaps` is empty or has duplicate ids, `terrains` has duplicate ids, a basemap or
- *   terrain id given is not among them, the terrain exaggeration is negative, or the thumbnail center is outside
- *   Web Mercator.
+ *   terrain id given is not among them, the terrain exaggeration is negative, the glyphs URL lacks `{fontstack}` or
+ *   `{range}`, or the thumbnail center is outside Web Mercator.
  */
 export function WebMap(props: WebMapProps): ReactElement {
   const basemaps: readonly Basemap[] = props.basemaps ?? openBasemaps;
@@ -94,6 +95,10 @@ export function WebMap(props: WebMapProps): ReactElement {
   requireUniqueTerrains(terrains);
   const terrainExaggeration: number = props.terrainExaggeration ?? 1;
   requireTerrainExaggeration(terrainExaggeration);
+  const glyphsUrl: string | null = props.glyphsUrl ?? null;
+  if (glyphsUrl !== null) {
+    requireGlyphsUrl(glyphsUrl);
+  }
   const thumbnailCenter: LngLat = props.thumbnailCenter ?? DEFAULT_THUMBNAIL_CENTER;
   requireThumbnailCenter(thumbnailCenter);
   const [terrainId, keepTerrainId] = useControllableState<string | undefined>(requireKnownId(terrains, props.terrainId, "Terrain"), () =>
@@ -116,6 +121,7 @@ export function WebMap(props: WebMapProps): ReactElement {
   const instance: MapInstance = useMapLibre(container, appearance, {
     camera: props.initialCamera ?? japanCamera,
     isHashSynced: props.isHashSynced ?? false,
+    glyphsUrl,
   });
   const map: MapLibreMap | null = instance.status === MapInstanceStatus.READY ? instance.map : null;
   const tileStatus: TileStatus = useTileStatus(instance, basemap);

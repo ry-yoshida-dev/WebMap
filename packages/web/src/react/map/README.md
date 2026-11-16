@@ -15,4 +15,4 @@ The `WebMap` component and what it offers its children.
 | [MissingMapContextError.ts](MissingMapContextError.ts) | Error of a hook or component used outside a `WebMap` |
 | [MapLabels.ts](MapLabels.ts) | Text of controls and messages |
 | [defaultMapLabels.ts](defaultMapLabels.ts) | English labels |
-| [WebMap.test.tsx](WebMap.test.tsx) | Color scheme classes and rejected thumbnail centers |
+| [WebMap.test.tsx](WebMap.test.tsx) | Color scheme classes, rejected glyphs URLs and thumbnail centers |

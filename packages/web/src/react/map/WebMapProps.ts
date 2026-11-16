@@ -53,6 +53,12 @@ export interface WebMapProps {
   /** Keep the camera in the page URL's hash as `#zoom/lat/lng/bearing/pitch`, so links reopen the same view. */
   readonly isHashSynced?: boolean;
   /**
+   * URL of the glyphs, with `{fontstack}` and `{range}`, for the application's text layers. It is given to every
+   * basemap whose style has none, such as raster basemaps and no basemap, from the first style on, so labels render
+   * whichever basemap is shown. Read once, when the map is created.
+   */
+  readonly glyphsUrl?: string;
+  /**
    * Show the basemap in shades of gray, so the application's overlays stand out; false when omitted. Overlays keep
    * their colors, and so do sprite icons and colors a style writes as legacy `stops` functions. Changing it reloads the
    * basemap's style.
