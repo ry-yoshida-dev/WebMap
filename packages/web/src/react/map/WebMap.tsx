@@ -123,6 +123,7 @@ export function WebMap(props: WebMapProps): ReactElement {
     camera: props.initialCamera ?? japanCamera,
     isHashSynced: props.isHashSynced ?? false,
     glyphsUrl,
+    isAttributionCompact: props.isAttributionCompact ?? null,
   });
   const map: MapLibreMap | null = instance.status === MapInstanceStatus.READY ? instance.map : null;
   const tileStatus: TileStatus = useTileStatus(instance, basemap);

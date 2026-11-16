@@ -14,7 +14,12 @@ import { useMapLibre } from "./useMapLibre.js";
 afterEach(cleanup);
 
 const appearance: MapAppearance = { basemap: sampleRasterBasemaps.first, isGrayscale: false, terrain: null, terrainExaggeration: 1 };
-const options = { camera: defineMapCamera({ center: { lng: 139.7, lat: 35.7 }, zoom: 10 }), isHashSynced: false, glyphsUrl: null };
+const options = {
+  camera: defineMapCamera({ center: { lng: 139.7, lat: 35.7 }, zoom: 10 }),
+  isHashSynced: false,
+  glyphsUrl: null,
+  isAttributionCompact: null,
+};
 
 /** Render the hook on a container. */
 function render() {

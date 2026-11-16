@@ -17,6 +17,7 @@ import { OverlayCarrier } from "../../style/OverlayCarrier.js";
 import { registerGsiElevationProtocol } from "../../terrain/gsiElevationProtocol.js";
 import { toGrayscaleStyle } from "../../style/toGrayscaleStyle.js";
 import { toMapStyle } from "../../style/toMapStyle.js";
+import { toAttributionControl } from "./toAttributionControl.js";
 import { withDefaultGlyphs } from "../../style/withDefaultGlyphs.js";
 import { withTerrain } from "../../style/withTerrain.js";
 import type { MapStyle } from "../../style/MapStyle.js";
@@ -52,7 +53,7 @@ export function useMapLibre(container: HTMLElement | null, appearance: MapAppear
     if (container === null) {
       return undefined;
     }
-    const { camera, isHashSynced, glyphsUrl }: MapLibreOptions = initialOptionsRef.current;
+    const { camera, isHashSynced, glyphsUrl, isAttributionCompact }: MapLibreOptions = initialOptionsRef.current;
     registerGsiElevationProtocol();
     let map: MapLibreMap | null = null;
     const carrier: OverlayCarrier = new OverlayCarrier((error: Error) => map?.fire(new ErrorEvent(error)));
@@ -68,6 +69,7 @@ export function useMapLibre(container: HTMLElement | null, appearance: MapAppear
         bearing: camera.bearing,
         pitch: camera.pitch,
         hash: isHashSynced,
+        attributionControl: toAttributionControl(isAttributionCompact),
         // Also applied by every later `setStyle`: the basemap is turned gray before the overlays are carried onto it,
         // and the terrain is set last, so it is never mistaken for the basemap's or an overlay.
         transformStyle: (previous, next) => {

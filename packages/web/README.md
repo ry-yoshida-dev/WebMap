@@ -4,7 +4,8 @@
 
 React DOM `WebMap` on MapLibre GL JS. The map fills the space it is given; the toolbar below it holds the basemap menu,
 which opens a panel of thumbnails, with a notice for restricted terms, the 3D terrain button and elevation data menu, extension controls, the position under the pointer, the zoom level, tile loading
-and failure status, and zoom and north buttons. Attribution and a scale bar sit on the map. Children extend it: they
+and failure status, and zoom and north buttons. Attribution and a scale bar sit on the map; MapLibre folds the attribution behind a button on narrow maps, and
+`isAttributionCompact` folds it always, open until the map is first dragged, or never. Children extend it: they
 draw on the MapLibre map from `useMapContext`, and their overlays are carried onto the next basemap when the user
 switches. Give overlays ids no basemap uses: an overlay sharing an id with the next basemap's sources or layers is
 left off it and reported as an `OverlayConflictError` `error` event of the map. Overlays are carried above all of the next

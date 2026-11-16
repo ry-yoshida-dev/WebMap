@@ -59,6 +59,12 @@ export interface WebMapProps {
    */
   readonly glyphsUrl?: string;
   /**
+   * Fold the attribution on the map behind a toggle button (true), which MapLibre shows open until the map is first
+   * dragged, or always spell it out (false); when omitted MapLibre folds it on narrow maps. Read once, when the map is
+   * created.
+   */
+  readonly isAttributionCompact?: boolean;
+  /**
    * Show the basemap in shades of gray, so the application's overlays stand out; false when omitted. Overlays keep
    * their colors, and so do sprite icons and colors a style writes as legacy `stops` functions. Changing it reloads the
    * basemap's style.

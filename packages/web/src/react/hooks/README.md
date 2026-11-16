@@ -23,6 +23,8 @@ Hooks binding the MapLibre map to React.
 | [TileStatus.ts](TileStatus.ts) | Idle, loading or failed |
 | [TileStatusSource.ts](TileStatusSource.ts) | What tile status follows of a map |
 | [useBasemapThumbnails.ts](useBasemapThumbnails.ts) | Thumbnails of basemaps, drawing style basemaps on request; exported, usable outside a `WebMap` |
+| [toAttributionControl.ts](toAttributionControl.ts) | The attribution control option from the application's compact setting |
+| [toAttributionControl.test.ts](toAttributionControl.test.ts) | Default, compact and expanded attribution |
 | [useMapLibre.test.tsx](useMapLibre.test.tsx) | Creating the map again after a failure only for another basemap |
 | [compareAppearance.test.ts](compareAppearance.test.ts) | Style reloads and terrain swaps told apart, by id |
 | [useControllableState.test.tsx](useControllableState.test.tsx) | Values kept by the application or by the component |
