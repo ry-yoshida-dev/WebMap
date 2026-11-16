@@ -7,6 +7,7 @@ import { applyTerrain } from "./applyTerrain.js";
 import type { TerrainTarget } from "./applyTerrain.js";
 import { GSI_ELEVATION_SCHEME } from "./gsiElevationScheme.js";
 import { gsiToTerrarium } from "./gsiToTerrarium.js";
+import { terrainRgbToTerrarium } from "./terrainRgbToTerrarium.js";
 import type { MapStyle } from "../style/MapStyle.js";
 import { OverlayCarrier } from "../style/OverlayCarrier.js";
 import type { OverlayConflictError } from "../style/OverlayConflictError.js";
@@ -54,6 +55,26 @@ describe("gsiToTerrarium", () => {
 
   it("rejects a length that is not whole pixels", () => {
     assert.throws(() => gsiToTerrarium(new Uint8ClampedArray(3)), RangeError);
+  });
+});
+
+describe("terrainRgbToTerrarium", () => {
+  it("keeps heights within the Terrarium resolution, below sea level too", () => {
+    const heights: readonly number[] = [-100, 0, 3776.1, 8848.5];
+    const pixels: Uint8ClampedArray = new Uint8ClampedArray(
+      heights.flatMap((height: number) => {
+        const value: number = Math.round((height + 10000) * 10);
+        return [Math.floor(value / 65536), Math.floor(value / 256) % 256, value % 256, 255];
+      }),
+    );
+    terrainRgbToTerrarium(pixels);
+    heights.forEach((height: number, index: number) => {
+      assert.ok(Math.abs(terrariumHeight(pixels, index * 4) - height) <= 0.1, `${height}`);
+    });
+  });
+
+  it("rejects a length that is not whole pixels", () => {
+    assert.throws(() => terrainRgbToTerrarium(new Uint8ClampedArray(3)), RangeError);
   });
 });
 

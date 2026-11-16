@@ -4,6 +4,8 @@ export type { Attribution, Basemap, LngLat, MapCamera, MapExtent, MapViewport, T
 export { readCamera } from "./camera/readCamera.js";
 export { readViewport } from "./camera/readViewport.js";
 
+export { fetchTerrainTile } from "./terrain/fetchTerrainTile.js";
+
 export { collectAttributions } from "./attribution/collectAttributions.js";
 export { formatAttributionHtml } from "./attribution/formatAttributionHtml.js";
 export { formatAttributionText } from "./attribution/formatAttributionText.js";

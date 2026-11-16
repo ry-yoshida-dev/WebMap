@@ -20,7 +20,9 @@ chooses the elevation data: GSI elevation tiles, covering Japan, by default, or 
 basemap can be shown over either. `terrains`, `terrainId` and `onTerrainChange` work as their basemap counterparts do,
 and `isTerrainShown`, `initialIsTerrainShown` and `onTerrainShownChange` do the same for the button; 3D terrain starts
 off. The terrain stays when the basemap changes. To stand 3D objects on the ground, read the height with
-`map.queryTerrainElevation`, which includes `terrainExaggeration` and returns null while 3D terrain is off.
+`map.queryTerrainElevation`, which includes `terrainExaggeration` and returns null while 3D terrain is off. A layer
+that needs the elevation itself, such as a 3D layer drawing the ground's depth, gets one tile of any terrain as
+Terrarium pixels from `fetchTerrainTile`, GSI re-encoding included.
 
 The map's style is a complete document: `map.getStyle()` holds the basemap, its grayscale, the terrain and the
 overlays, so a second map created from it, as for rendering a print at a higher resolution, shows the same, provided
