@@ -14,7 +14,7 @@ and terrain menus, the usage notice, the terrain button, the readout, the tile s
 | [BasemapPicker.tsx](BasemapPicker.tsx) | Basemap menu: a button opening a panel of thumbnails on the roomier side |
 | [BasemapOption.tsx](BasemapOption.tsx) | One basemap in the panel, with its thumbnail and restriction |
 | [describeRestriction.ts](describeRestriction.ts) | Label of restricted commercial use |
-| [UsageNotice.tsx](UsageNotice.tsx) | Badge linking to restricted terms |
+| [UsageNotice.tsx](UsageNotice.tsx) | Badge linking to restricted terms, or flagging unknown ones |
 | [TerrainToggle.tsx](TerrainToggle.tsx) | Button turning 3D terrain on and off, tilting a flat view |
 | [TerrainPicker.tsx](TerrainPicker.tsx) | Menu of the elevation data, disabled while 3D terrain is off |
 | [PositionReadout.tsx](PositionReadout.tsx) | Position under the pointer and zoom level |
@@ -23,3 +23,4 @@ and terrain menus, the usage notice, the terrain button, the readout, the tile s
 | [IconButton.tsx](IconButton.tsx) | Toolbar button holding a glyph |
 | `*Props.ts` | Props of the component of the same name |
 | [BasemapPicker.test.tsx](BasemapPicker.test.tsx) | Opening, keyboard navigation, choosing and closing the basemap menu |
+| [UsageNotice.test.tsx](UsageNotice.test.tsx) | Allowed, restricted and unknown terms |

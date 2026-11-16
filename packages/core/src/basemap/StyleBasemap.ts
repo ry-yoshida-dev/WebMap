@@ -6,6 +6,6 @@ import type { BasemapKind } from "./BasemapKind.js";
  */
 export interface StyleBasemap extends BasemapIdentity {
   readonly kind: BasemapKind.STYLE;
-  /** `https` URL of the style document. */
+  /** `https` URL of the style document; `http` only when the basemap was defined with `isHttpAllowed`. */
   readonly styleUrl: string;
 }

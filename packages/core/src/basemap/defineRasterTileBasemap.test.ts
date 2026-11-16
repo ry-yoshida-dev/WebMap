@@ -64,4 +64,39 @@ describe("defineRasterTileBasemap", () => {
   it("rejects a blank id", () => {
     assert.throws(() => defineRasterTileBasemap({ ...specification, id: " " }), BasemapDefinitionError);
   });
+
+  it("accepts an http template only when allowed", () => {
+    const http = { ...specification, tileUrlTemplate: "http://tiles.example.com/{z}/{x}/{y}.png" };
+    assert.throws(() => defineRasterTileBasemap(http), BasemapDefinitionError);
+    const basemap = defineRasterTileBasemap({ ...http, isHttpAllowed: true });
+    assert.equal(basemap.tileUrlTemplate, http.tileUrlTemplate);
+    assert.ok(!("isHttpAllowed" in basemap));
+    assert.throws(() => defineRasterTileBasemap({ ...http, isHttpAllowed: true, tileUrlTemplate: "ftp://tiles.example.com/{z}/{x}/{y}" }));
+  });
+
+  it("accepts the bounding box of a WMS request instead of the three placeholders", () => {
+    const wms = "https://wms.example.com/map?SERVICE=WMS&REQUEST=GetMap&LAYERS=a,b&CRS=EPSG:3857&BBOX={bbox-epsg-3857}";
+    assert.equal(defineRasterTileBasemap({ ...specification, tileUrlTemplate: wms }).tileUrlTemplate, wms);
+  });
+});
+
+describe("credits and terms without a link", () => {
+  const unknownTerms: RasterTileBasemapSpecification = {
+    ...specification,
+    usage: { license: "Unknown", termsUrl: null, commercialUse: CommercialUse.UNKNOWN, conditions: null },
+  };
+
+  it("accepts plain text credits and unknown terms", () => {
+    const basemap = defineRasterTileBasemap({ ...unknownTerms, attributions: [{ text: "Typed by the user", url: null }] });
+    assert.equal(basemap.attributions[0]?.url, null);
+    assert.equal(basemap.usage.termsUrl, null);
+  });
+
+  it("still rejects a blank credit and a link that is not https", () => {
+    assert.throws(() => defineRasterTileBasemap({ ...unknownTerms, attributions: [{ text: " ", url: null }] }), BasemapDefinitionError);
+    assert.throws(
+      () => defineRasterTileBasemap({ ...unknownTerms, attributions: [{ text: "Credit", url: "http://example.com/" }] }),
+      BasemapDefinitionError,
+    );
+  });
 });

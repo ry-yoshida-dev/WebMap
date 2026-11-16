@@ -15,6 +15,10 @@ describe("formatAttributionHtml", () => {
     );
   });
 
+  it("writes a credit without a link as escaped text", () => {
+    assert.equal(formatAttributionHtml([{ text: "<b>Typed</b>", url: null }]), "&lt;b&gt;Typed&lt;/b&gt;");
+  });
+
   it("escapes markup in text and URLs", () => {
     const html: string = formatAttributionHtml([{ text: "<img src=x onerror=alert(1)>", url: 'https://a.example/"onclick="x' }]);
     assert.ok(!html.includes("<img"));

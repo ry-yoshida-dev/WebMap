@@ -9,11 +9,13 @@ function escapeHtml(text: string): string {
 /**
  * Render attributions as the HTML MapLibre's attribution control shows, escaping every value.
  *
- * @param attributions - Credits, each linking to its source.
- * @returns Links separated by ` | `.
+ * @param attributions - Credits, each linking to its source when it has one.
+ * @returns Links, or escaped text for a credit without a link, separated by ` | `.
  */
 export function formatAttributionHtml(attributions: readonly Attribution[]): string {
   return attributions
-    .map(({ text, url }: Attribution) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`)
+    .map(({ text, url }: Attribution) =>
+      url === null ? escapeHtml(text) : `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`,
+    )
     .join(" | ");
 }

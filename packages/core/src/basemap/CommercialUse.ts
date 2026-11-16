@@ -8,4 +8,6 @@ export enum CommercialUse {
   CONDITIONAL = "conditional",
   /** Not allowed without a separately purchased license. */
   NON_COMMERCIAL_ONLY = "non-commercial-only",
+  /** Not known, as for a service a user added by its address; the user judges whether showing it is allowed. */
+  UNKNOWN = "unknown",
 }

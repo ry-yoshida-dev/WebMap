@@ -3,7 +3,7 @@
 ## Overview
 
 Platform-independent model of basemaps, terrains and the camera, and the default catalog of open basemaps and
-terrains. Basemaps, terrains and cameras are validated when defined, so URLs are always `https` and zoom ranges and
+terrains. Basemaps, terrains and cameras are validated when defined, so URLs are `https` unless a basemap is defined to accept `http`, and zoom ranges and
 coordinates are always in range.
 
 ## Components
@@ -27,5 +27,18 @@ const tiles = defineRasterTileBasemap({
   maxZoom: 20,
   attributions: [{ text: "Example Survey", url: "https://example.com/" }],
   usage: { license: "Internal", termsUrl: "https://example.com/terms", commercialUse: CommercialUse.ALLOWED, conditions: null },
+});
+
+// A WMS the user typed in: no terms to link, the credit as plain text, tiles asked for by their bounding box.
+const wms = defineRasterTileBasemap({
+  id: "added-wms",
+  title: "Added service",
+  tileUrlTemplate:
+    "http://wms.example.com/map?SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0&LAYERS=roads&STYLES=&FORMAT=image/png&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&BBOX={bbox-epsg-3857}",
+  minZoom: 0,
+  maxZoom: 18,
+  attributions: [{ text: "Example Survey", url: null }],
+  usage: { license: "Unknown", termsUrl: null, commercialUse: CommercialUse.UNKNOWN, conditions: null },
+  isHttpAllowed: true,
 });
 ```

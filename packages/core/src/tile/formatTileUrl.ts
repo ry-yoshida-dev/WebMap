@@ -1,19 +1,30 @@
 import type { RasterTileBasemap } from "../basemap/RasterTileBasemap.js";
+import { BOUNDING_BOX_PLACEHOLDER } from "../basemap/boundingBoxPlaceholder.js";
 import { requireTileOnGrid } from "./requireTileOnGrid.js";
 import type { TileCoordinate } from "./TileCoordinate.js";
+import { tileExtent } from "./tileExtent.js";
+
+/** What addresses a tile: a raster basemap, or a terrain. */
+type TileSource = Pick<RasterTileBasemap, "id" | "tileUrlTemplate" | "minZoom" | "maxZoom">;
 
 /**
- * Fill a raster basemap's URL template for one tile.
+ * Fill a raster basemap's URL template for one tile, with the tile's bounding box in Web Mercator meters where the
+ * template asks for it, as a WMS does.
  *
- * @param basemap - Basemap whose tiles to address.
+ * @param basemap - Raster basemap, or terrain, whose tiles to address.
  * @param tile - Tile to fetch.
  * @returns The tile's URL.
- * @throws RangeError When the tile is not on the grid of its zoom, or its zoom is outside the basemap's zoom range.
+ * @throws RangeError When the tile is not on the grid of its zoom, or its zoom is outside the zoom range of the basemap or terrain.
  */
-export function formatTileUrl(basemap: RasterTileBasemap, tile: TileCoordinate): string {
+export function formatTileUrl(basemap: TileSource, tile: TileCoordinate): string {
   requireTileOnGrid(tile);
   if (tile.zoom < basemap.minZoom || tile.zoom > basemap.maxZoom) {
-    throw new RangeError(`Basemap ${basemap.id} serves zooms ${basemap.minZoom} to ${basemap.maxZoom}, not ${tile.zoom}`);
+    throw new RangeError(`Tiles of ${basemap.id} are served at zooms ${basemap.minZoom} to ${basemap.maxZoom}, not ${tile.zoom}`);
   }
-  return basemap.tileUrlTemplate.replaceAll("{z}", String(tile.zoom)).replaceAll("{x}", String(tile.x)).replaceAll("{y}", String(tile.y));
+  const { minX, minY, maxX, maxY } = tileExtent(tile);
+  return basemap.tileUrlTemplate
+    .replaceAll("{z}", String(tile.zoom))
+    .replaceAll("{x}", String(tile.x))
+    .replaceAll("{y}", String(tile.y))
+    .replaceAll(BOUNDING_BOX_PLACEHOLDER, [minX, minY, maxX, maxY].join(","));
 }

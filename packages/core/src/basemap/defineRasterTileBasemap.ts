@@ -9,12 +9,17 @@ import type { RasterTileBasemapSpecification } from "./RasterTileBasemapSpecific
  *
  * @param specification - Template, zoom range, attribution and terms.
  * @returns The basemap.
- * @throws BasemapDefinitionError When a URL is not `https` or the template lacks `{z}`, `{x}` or `{y}`.
+ * @throws BasemapDefinitionError When a URL is not `https` (the tile URL may be `http` when allowed), or the template
+ *   lacks `{z}`, `{x}` or `{y}` and has no `{bbox-epsg-3857}`.
  * @throws RangeError When the zoom range or tile size is out of range.
  */
 export function defineRasterTileBasemap(specification: RasterTileBasemapSpecification): RasterTileBasemap {
   const tileSize: number = specification.tileSize ?? 256;
   requireBasemapIdentity(specification);
-  requireTileRange(specification.id, specification.tileUrlTemplate, specification.minZoom, specification.maxZoom, tileSize);
-  return { ...specification, kind: BasemapKind.RASTER_TILES, tileSize };
+  const { isHttpAllowed, ...basemap } = specification;
+  requireTileRange(specification.id, specification.tileUrlTemplate, specification.minZoom, specification.maxZoom, tileSize, {
+    isHttpAllowed: isHttpAllowed ?? false,
+    isBoundingBoxAllowed: true,
+  });
+  return { ...basemap, kind: BasemapKind.RASTER_TILES, tileSize };
 }

@@ -17,4 +17,5 @@ export const defaultMapLabels: MapLabels = {
   mapError: "The map could not be shown",
   nonCommercialOnly: "Non-commercial only",
   conditional: "Conditions apply",
+  unknownTerms: "Terms unknown",
 };

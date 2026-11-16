@@ -1,7 +1,17 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { formatTileUrl, gsiBasemaps, MERCATOR_LATITUDE_LIMIT, nasaGibsBasemaps, tileCenter, tileContaining } from "../index.js";
+import {
+  defineRasterTileBasemap,
+  CommercialUse,
+  formatTileUrl,
+  tileExtent,
+  gsiBasemaps,
+  MERCATOR_LATITUDE_LIMIT,
+  nasaGibsBasemaps,
+  tileCenter,
+  tileContaining,
+} from "../index.js";
 
 describe("tileContaining", () => {
   it("finds the tile of a position", () => {
@@ -49,5 +59,37 @@ describe("formatTileUrl", () => {
     assert.throws(() => formatTileUrl(gsiBasemaps.standard, { zoom: 5.5, x: 0, y: 0 }), RangeError);
     assert.throws(() => formatTileUrl(gsiBasemaps.standard, { zoom: 5, x: -1, y: 0 }), RangeError);
     assert.throws(() => formatTileUrl(gsiBasemaps.standard, { zoom: 5, x: 0, y: 32 }), RangeError);
+  });
+});
+
+describe("tileExtent", () => {
+  it("covers the whole square at zoom 0 and halves it at zoom 1", () => {
+    const edge = 20037508.342789244;
+    assert.deepEqual(tileExtent({ zoom: 0, x: 0, y: 0 }), { minX: -edge, minY: -edge, maxX: edge, maxY: edge });
+    assert.deepEqual(tileExtent({ zoom: 1, x: 1, y: 0 }), { minX: 0, minY: 0, maxX: edge, maxY: edge });
+  });
+
+  it("rejects tiles off the grid", () => {
+    assert.throws(() => tileExtent({ zoom: 1, x: 2, y: 0 }), RangeError);
+  });
+});
+
+describe("formatTileUrl of a WMS template", () => {
+  const wms = defineRasterTileBasemap({
+    id: "wms",
+    title: "WMS",
+    tileUrlTemplate: "https://wms.example.com/map?LAYERS=a&CRS=EPSG:3857&BBOX={bbox-epsg-3857}",
+    minZoom: 0,
+    maxZoom: 18,
+    attributions: [],
+    usage: { license: "Unknown", termsUrl: null, commercialUse: CommercialUse.UNKNOWN, conditions: null },
+  });
+
+  it("fills the bounding box of the tile in Web Mercator meters", () => {
+    const { minX, minY, maxX, maxY } = tileExtent({ zoom: 7, x: 113, y: 50 });
+    assert.equal(
+      formatTileUrl(wms, { zoom: 7, x: 113, y: 50 }),
+      `https://wms.example.com/map?LAYERS=a&CRS=EPSG:3857&BBOX=${minX},${minY},${maxX},${maxY}`,
+    );
   });
 });

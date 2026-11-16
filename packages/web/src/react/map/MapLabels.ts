@@ -17,4 +17,6 @@ export interface MapLabels {
   readonly mapError: string;
   readonly nonCommercialOnly: string;
   readonly conditional: string;
+  /** Flag on a basemap whose terms are not known, as one the user added by its address. */
+  readonly unknownTerms: string;
 }

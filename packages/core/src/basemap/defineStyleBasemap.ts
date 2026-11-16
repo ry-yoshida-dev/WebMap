@@ -9,10 +9,11 @@ import type { StyleBasemapSpecification } from "./StyleBasemapSpecification.js";
  *
  * @param specification - Style URL, attribution and terms.
  * @returns The basemap.
- * @throws BasemapDefinitionError When a URL is not `https` or the id or title is blank.
+ * @throws BasemapDefinitionError When a URL is not `https` (the style URL may be `http` when allowed) or the id or title is blank.
  */
 export function defineStyleBasemap(specification: StyleBasemapSpecification): StyleBasemap {
   requireBasemapIdentity(specification);
-  requireHttpsUrl(specification.styleUrl, `style of ${specification.id}`);
-  return { ...specification, kind: BasemapKind.STYLE };
+  const { isHttpAllowed, ...basemap } = specification;
+  requireHttpsUrl(specification.styleUrl, `style of ${specification.id}`, isHttpAllowed ?? false);
+  return { ...basemap, kind: BasemapKind.STYLE };
 }

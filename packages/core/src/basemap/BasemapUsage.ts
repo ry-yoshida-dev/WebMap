@@ -8,8 +8,8 @@ import type { CommercialUse } from "./CommercialUse.js";
 export interface BasemapUsage {
   /** License of the imagery or data, such as `CC BY 4.0`. */
   readonly license: string;
-  /** `https` URL of the provider's terms. */
-  readonly termsUrl: string;
+  /** `https` URL of the provider's terms, or null when there are none to link, as for a basemap a user added. */
+  readonly termsUrl: string | null;
   readonly commercialUse: CommercialUse;
   /** Conditions beyond attribution, such as quotas, or null when there are none. */
   readonly conditions: string | null;

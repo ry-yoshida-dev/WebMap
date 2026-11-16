@@ -6,7 +6,11 @@ import type { BasemapKind } from "./BasemapKind.js";
  */
 export interface RasterTileBasemap extends BasemapIdentity {
   readonly kind: BasemapKind.RASTER_TILES;
-  /** `https` URL with `{z}`, `{x}` and `{y}` placeholders, in any order. */
+  /**
+   * `https` URL with `{z}`, `{x}` and `{y}` placeholders, in any order, or with `{bbox-epsg-3857}`, the tile's
+   * bounding box in Web Mercator meters, as a WMS `GetMap` request takes it. An `http` URL only when the basemap was
+   * defined with `isHttpAllowed`.
+   */
   readonly tileUrlTemplate: string;
   /** Edge of a tile in pixels. */
   readonly tileSize: number;

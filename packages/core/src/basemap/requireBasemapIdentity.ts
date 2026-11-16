@@ -6,7 +6,7 @@ import { requireHttpsUrl } from "./requireHttpsUrl.js";
  * Validate the id, title, attribution and terms every basemap and terrain has.
  *
  * @param identity - Fields to check.
- * @throws BasemapDefinitionError When the id, title or an attribution is blank, or a URL is not `https`.
+ * @throws BasemapDefinitionError When the id, title or an attribution is blank, or a URL given is not `https`.
  */
 export function requireBasemapIdentity(identity: BasemapIdentity): void {
   if (identity.id.trim() === "") {
@@ -15,11 +15,15 @@ export function requireBasemapIdentity(identity: BasemapIdentity): void {
   if (identity.title.trim() === "") {
     throw new BasemapDefinitionError(`${identity.id} has a blank title`);
   }
-  requireHttpsUrl(identity.usage.termsUrl, `terms of ${identity.id}`);
+  if (identity.usage.termsUrl !== null) {
+    requireHttpsUrl(identity.usage.termsUrl, `terms of ${identity.id}`);
+  }
   for (const attribution of identity.attributions) {
     if (attribution.text.trim() === "") {
       throw new BasemapDefinitionError(`${identity.id} has a blank attribution`);
     }
-    requireHttpsUrl(attribution.url, `attribution of ${identity.id}`);
+    if (attribution.url !== null) {
+      requireHttpsUrl(attribution.url, `attribution of ${identity.id}`);
+    }
   }
 }
