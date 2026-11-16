@@ -23,7 +23,8 @@ and `isTerrainShown`, `initialIsTerrainShown` and `onTerrainShownChange` do the 
 off. The terrain stays when the basemap changes. To stand 3D objects on the ground, read the height with
 `map.queryTerrainElevation`, which includes `terrainExaggeration` and returns null while 3D terrain is off.
 
-A basemap a user added by an address, with `defineRasterTileBasemap`, may be a WMS
+Offer `noBasemap` from `@web-map/core` among the `basemaps` to let users see their data alone: it has an empty swatch in
+the menu and no credit or terms. A basemap a user added by an address, with `defineRasterTileBasemap`, may be a WMS
 (`{bbox-epsg-3857}` in the URL, which MapLibre and the menu's thumbnails fill with the tile's bounding box), may have
 credits without a link and `CommercialUse.UNKNOWN` terms, shown as "Terms unknown", and may be `http` when defined with
 `isHttpAllowed`; `https` stays the default, as a page served over `https` cannot load `http` tiles.

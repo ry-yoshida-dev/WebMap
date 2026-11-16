@@ -11,7 +11,8 @@ export const RASTER_BASEMAP_ID: string = "web-map-basemap";
  * Turn a basemap into what `Map.setStyle` accepts.
  *
  * @param basemap - Basemap to show.
- * @returns A style document for raster tiles, or the style URL of a style basemap.
+ * @returns A style document for raster tiles, an empty style document for no basemap, or the style URL of a style
+ *   basemap.
  */
 export function toMapStyle(basemap: Basemap): MapStyle | string {
   switch (basemap.kind) {
@@ -32,6 +33,8 @@ export function toMapStyle(basemap: Basemap): MapStyle | string {
       };
     case BasemapKind.STYLE:
       return basemap.styleUrl;
+    case BasemapKind.NONE:
+      return { version: 8, sources: {}, layers: [] };
     default: {
       const unreachable: never = basemap;
       throw new TypeError(`Unknown basemap ${String(unreachable)}`);

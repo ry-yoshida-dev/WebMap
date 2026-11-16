@@ -22,5 +22,5 @@ and terrain menus, the usage notice, the terrain button, the readout, the tile s
 | [NavigationButtons.tsx](NavigationButtons.tsx) | Zoom out, zoom in and reset north |
 | [IconButton.tsx](IconButton.tsx) | Toolbar button holding a glyph |
 | `*Props.ts` | Props of the component of the same name |
-| [BasemapPicker.test.tsx](BasemapPicker.test.tsx) | Opening, keyboard navigation, choosing and closing the basemap menu |
+| [BasemapPicker.test.tsx](BasemapPicker.test.tsx) | Opening, keyboard navigation, choosing and closing the basemap menu, and no basemap as an option |
 | [UsageNotice.test.tsx](UsageNotice.test.tsx) | Allowed, restricted and unknown terms |

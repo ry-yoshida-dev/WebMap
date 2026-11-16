@@ -6,4 +6,5 @@ import type { ThumbnailStatus } from "./ThumbnailStatus.js";
 export type Thumbnail =
   | { readonly status: ThumbnailStatus.PENDING }
   | { readonly status: ThumbnailStatus.READY; readonly url: string }
+  | { readonly status: ThumbnailStatus.EMPTY }
   | { readonly status: ThumbnailStatus.FAILED };

@@ -6,4 +6,6 @@ export enum BasemapKind {
   RASTER_TILES = "raster-tiles",
   /** A MapLibre style document, usually drawing vector tiles. */
   STYLE = "style",
+  /** No background at all: only what the application draws over the map. */
+  NONE = "none",
 }

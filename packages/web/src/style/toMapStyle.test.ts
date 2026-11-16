@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { CommercialUse, defineRasterTileBasemap, gsiBasemaps, openFreeMapBasemaps } from "@web-map/core";
+import { CommercialUse, defineRasterTileBasemap, gsiBasemaps, noBasemap, openFreeMapBasemaps } from "@web-map/core";
 
 import { RASTER_BASEMAP_ID, toMapStyle } from "./toMapStyle.js";
 
@@ -19,6 +19,10 @@ describe("toMapStyle", () => {
 
   it("passes a style basemap's URL through", () => {
     assert.equal(toMapStyle(openFreeMapBasemaps.liberty), "https://tiles.openfreemap.org/styles/liberty");
+  });
+
+  it("builds an empty style for no basemap", () => {
+    assert.deepEqual(toMapStyle(noBasemap), { version: 8, sources: {}, layers: [] });
   });
 
   it("keeps a bounding box placeholder for MapLibre to fill", () => {

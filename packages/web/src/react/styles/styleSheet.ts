@@ -91,6 +91,7 @@ ${darkTokens}
   display: grid; place-items: center; width: 64px; height: 64px; flex: none; overflow: hidden;
   border: 1px solid var(--wmap-border); border-radius: 6px; background: var(--wmap-stage); color: var(--wmap-muted);
 }
+.wmap-thumbnail-empty { border-style: dashed; background: transparent; }
 .wmap-thumbnail > img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .wmap-option[aria-selected="true"] .wmap-thumbnail { outline: 2px solid var(--wmap-accent); outline-offset: 1px; }
 .wmap-option[aria-selected="true"] .wmap-option-title { color: var(--wmap-accent); font-weight: 600; }

@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 
 import { cleanup, renderHook, waitFor } from "@testing-library/react";
+import { noBasemap } from "@web-map/core";
 import type { Basemap } from "@web-map/core";
 
 import { sampleRasterBasemaps, sampleStyleBasemap } from "../testing/sampleBasemaps.js";
@@ -23,6 +24,11 @@ describe("useBasemapThumbnails", () => {
       url: "https://tiles.example/first/7/113/50.png",
     });
     assert.equal(document.body.childElementCount, 1);
+  });
+
+  it("has nothing to preview for no basemap", () => {
+    const { result } = renderHook(() => useBasemapThumbnails([noBasemap], true, DEFAULT_THUMBNAIL_CENTER));
+    assert.deepEqual(result.current(noBasemap), { status: ThumbnailStatus.EMPTY });
   });
 
   it("shows the tile around the center it is given", () => {

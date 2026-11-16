@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { noBasemap } from "@web-map/core";
 import type { Basemap } from "@web-map/core";
 
 import { BasemapPicker } from "./BasemapPicker.js";
@@ -69,5 +70,24 @@ describe("BasemapPicker", () => {
     renderPicker();
     fireEvent.pointerDown(document.body);
     assert.equal(screen.queryByRole("listbox"), null);
+  });
+
+  it("offers no basemap as an option with an empty swatch and no restriction", () => {
+    const chosen: Basemap[] = [];
+    render(
+      <BasemapPicker
+        basemaps={[first, noBasemap]}
+        basemap={first}
+        onChange={(basemap: Basemap) => chosen.push(basemap)}
+        labels={defaultMapLabels}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { expanded: false }));
+    const option: HTMLElement = screen.getByRole("option", { name: new RegExp(noBasemap.title) });
+    assert.ok(option.querySelector(".wmap-thumbnail-empty") !== null);
+    assert.equal(option.querySelector("img"), null);
+    assert.equal(option.querySelector(".wmap-option-restriction"), null);
+    fireEvent.click(option);
+    assert.deepEqual(chosen, [noBasemap]);
   });
 });

@@ -32,6 +32,8 @@ function ThumbnailImage({ thumbnail }: { readonly thumbnail: Thumbnail }): React
           <Icon name={IconName.FOLDED_MAP} />
         </span>
       );
+    case ThumbnailStatus.EMPTY:
+      return <span className="wmap-thumbnail wmap-thumbnail-empty" />;
     case ThumbnailStatus.FAILED:
       return (
         <span className="wmap-thumbnail">

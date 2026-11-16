@@ -28,5 +28,5 @@ Hooks binding the MapLibre map to React.
 | [useControllableState.test.tsx](useControllableState.test.tsx) | Values kept by the application or by the component |
 | [useMapState.test.tsx](useMapState.test.tsx) | Values re-read on events and listeners removed |
 | [useTileStatus.test.tsx](useTileStatus.test.tsx) | Loading, failures of the basemap and its style only, and recovering from them |
-| [useBasemapThumbnails.test.tsx](useBasemapThumbnails.test.tsx) | Raster tiles, and styles that cannot be drawn reported as failed |
+| [useBasemapThumbnails.test.tsx](useBasemapThumbnails.test.tsx) | Raster tiles, no basemap, and styles that cannot be drawn reported as failed |
 | [useMapContext.test.tsx](useMapContext.test.tsx) | The error outside a `WebMap` |

@@ -13,6 +13,7 @@ terms are in [docs/basemaps.md](../../../../docs/basemaps.md).
 | [openFreeMapBasemaps.ts](openFreeMapBasemaps.ts) | OpenFreeMap vector styles of OpenStreetMap data |
 | [openTopoMapBasemaps.ts](openTopoMapBasemaps.ts) | OpenTopoMap topographic map |
 | [nasaGibsBasemaps.ts](nasaGibsBasemaps.ts) | NASA GIBS satellite composites |
+| [noBasemap.ts](noBasemap.ts) | The choice of showing no basemap, outside the open basemaps |
 | [openBasemaps.ts](openBasemaps.ts) | All of the above, in menu order |
 | [gsiTerrains.ts](gsiTerrains.ts) | Geospatial Information Authority of Japan elevation tiles |
 | [mapzenTerrains.ts](mapzenTerrains.ts) | Worldwide Mapzen Terrain Tiles |

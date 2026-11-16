@@ -6,6 +6,8 @@ export enum ThumbnailStatus {
   PENDING = "pending",
   /** Has an image URL. */
   READY = "ready",
+  /** There is nothing to preview, as for no basemap; show an empty swatch. */
+  EMPTY = "empty",
   /** Could not be drawn; show a placeholder. */
   FAILED = "failed",
 }

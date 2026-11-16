@@ -56,6 +56,8 @@ export function useBasemapThumbnails(basemaps: readonly Basemap[], isRequested: 
     switch (basemap.kind) {
       case BasemapKind.RASTER_TILES:
         return { status: ThumbnailStatus.READY, url: rasterThumbnailUrl(basemap, center) };
+      case BasemapKind.NONE:
+        return { status: ThumbnailStatus.EMPTY };
       case BasemapKind.STYLE: {
         const image: string | null | undefined = drawn.get(`${lng},${lat}\n${basemap.styleUrl}`);
         if (image === undefined) {
