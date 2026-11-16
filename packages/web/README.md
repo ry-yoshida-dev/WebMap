@@ -34,6 +34,13 @@ the menu and no credit or terms. A basemap a user added by an address, with `def
 credits without a link and `CommercialUse.UNKNOWN` terms, shown as "Terms unknown", and may be `http` when defined with
 `isHttpAllowed`; `https` stays the default, as a page served over `https` cannot load `http` tiles.
 
+An app listing basemaps in a panel of its own gets the menu's previews from `useBasemapThumbnails(basemaps, isRequested,
+center)`, which needs no `WebMap` or context: raster basemaps give the URL of one of their tiles at once, and style
+basemaps, such as OpenFreeMap, are drawn on a hidden map once `isRequested` is true. It returns a lookup from a basemap
+to a `Thumbnail`, a `ThumbnailStatus` of `PENDING`, `READY` with an image `url`, `EMPTY` for no basemap or `FAILED`;
+show an empty swatch or a placeholder for the last two. `center` is the position every thumbnail shows, such as the
+map's `thumbnailCenter`.
+
 Where the screen has no room for the bar, set `isToolbarShown={false}` and lay out the exported controls
 (`BasemapPicker`, `UsageNotice`, `TerrainToggle`, `TerrainPicker`, `PositionReadout`, `TileStatusIndicator`, `NavigationButtons`, `IconButton`) yourself.
 `useMapContext` gives them the map, the basemaps and terrains, the chosen ones, whether 3D terrain is on and its

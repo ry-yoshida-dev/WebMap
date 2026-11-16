@@ -46,6 +46,10 @@ export { useMapContext } from "./react/hooks/useMapContext.js";
 export { useMapState } from "./react/hooks/useMapState.js";
 export type { MapStateTarget } from "./react/hooks/useMapState.js";
 
+export { useBasemapThumbnails } from "./react/hooks/useBasemapThumbnails.js";
+export type { Thumbnail } from "./thumbnail/Thumbnail.js";
+export { ThumbnailStatus } from "./thumbnail/ThumbnailStatus.js";
+
 export { MapColorScheme } from "./react/styles/MapColorScheme.js";
 
 export { Icon } from "./react/icons/Icon.js";
