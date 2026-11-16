@@ -1,5 +1,5 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
-import type { Basemap, LngLat, Terrain } from "@web-map/core";
+import type { Attribution, Basemap, LngLat, Terrain } from "@web-map/core";
 
 import type { MapLabels } from "./MapLabels.js";
 import type { TileStatus } from "../hooks/TileStatus.js";
@@ -40,6 +40,16 @@ export interface MapContextValue {
   readonly isTerrainShown: boolean;
   /** Turn 3D terrain on or off, as the built-in button does. */
   readonly changeTerrainShown: (isShown: boolean) => void;
+  /**
+   * Factor the terrain's heights are multiplied by, as {@link WebMapProps.terrainExaggeration} gave it; 1 when
+   * omitted. Applies while {@link isTerrainShown}.
+   */
+  readonly terrainExaggeration: number;
+  /**
+   * Credits the map on screen owes: the basemap's, and the terrain's while {@link isTerrainShown}. Write them with
+   * `formatAttributionText` for output that cannot carry links, such as a printed map.
+   */
+  readonly attributions: readonly Attribution[];
   /**
    * Whether the basemap's tiles are loading or have failed since it was chosen, for {@link TileStatusIndicator}.
    * Failures of the terrain and of the application's overlays are not counted.

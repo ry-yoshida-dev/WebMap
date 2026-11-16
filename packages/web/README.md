@@ -34,8 +34,9 @@ credits without a link and `CommercialUse.UNKNOWN` terms, shown as "Terms unknow
 
 Where the screen has no room for the bar, set `isToolbarShown={false}` and lay out the exported controls
 (`BasemapPicker`, `UsageNotice`, `TerrainToggle`, `TerrainPicker`, `PositionReadout`, `TileStatusIndicator`, `NavigationButtons`, `IconButton`) yourself.
-`useMapContext` gives them the map, the basemaps and terrains, the chosen ones, whether 3D terrain is on, the functions
-changing them, the status of the basemap's tiles and the labels. The map is the
+`useMapContext` gives them the map, the basemaps and terrains, the chosen ones, whether 3D terrain is on and its
+exaggeration, the functions changing them, the credits the map on screen owes (`attributions`, which
+`formatAttributionText` writes as plain text for printed output), the status of the basemap's tiles and the labels. The map is the
 containing block of its children, so absolutely positioned controls float over it. To keep the basemap choice in the
 app's state, pass `basemapId` and update it from `onBasemapChange`. Basemaps and terrains are told apart by id and
 by the URLs they load, so building new objects for them on every render reloads nothing, while one redefined under

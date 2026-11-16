@@ -1,8 +1,12 @@
 // Types of the core package that the props and callbacks below use, so an application can type them from this package.
-export type { Basemap, LngLat, MapCamera, MapExtent, MapViewport, Terrain } from "@web-map/core";
+export type { Attribution, Basemap, LngLat, MapCamera, MapExtent, MapViewport, Terrain } from "@web-map/core";
 
 export { readCamera } from "./camera/readCamera.js";
 export { readViewport } from "./camera/readViewport.js";
+
+export { collectAttributions } from "./attribution/collectAttributions.js";
+export { formatAttributionHtml } from "./attribution/formatAttributionHtml.js";
+export { formatAttributionText } from "./attribution/formatAttributionText.js";
 
 export { OverlayConflictError } from "./style/OverlayConflictError.js";
 

@@ -4,8 +4,9 @@ import { useCallback, useEffectEvent, useEffect, useMemo, useState } from "react
 import type { ReactElement } from "react";
 import type { Map as MapLibreMap, MapMouseEvent } from "maplibre-gl";
 import { defineMapCamera, openBasemaps, openTerrains } from "@web-map/core";
-import type { Basemap, LngLat, MapCamera, Terrain } from "@web-map/core";
+import type { Attribution, Basemap, LngLat, MapCamera, Terrain } from "@web-map/core";
 
+import { collectAttributions } from "../../attribution/collectAttributions.js";
 import { defaultMapLabels } from "./defaultMapLabels.js";
 import { MapContext } from "./MapContext.js";
 import type { MapContextValue } from "./MapContextValue.js";
@@ -185,6 +186,10 @@ export function WebMap(props: WebMapProps): ReactElement {
     [keepIsTerrainShown, onTerrainShownChange],
   );
 
+  const attributions: readonly Attribution[] = useMemo(
+    () => collectAttributions(basemap, isTerrainShown ? terrain : null),
+    [basemap, terrain, isTerrainShown],
+  );
   const isToolbarShown: boolean = props.isToolbarShown ?? true;
   const context: MapContextValue | null = useMemo(
     () =>
@@ -200,6 +205,8 @@ export function WebMap(props: WebMapProps): ReactElement {
             changeTerrain,
             isTerrainShown,
             changeTerrainShown,
+            terrainExaggeration,
+            attributions,
             tileStatus,
             labels,
             thumbnailCenter,
@@ -215,6 +222,8 @@ export function WebMap(props: WebMapProps): ReactElement {
       changeTerrain,
       isTerrainShown,
       changeTerrainShown,
+      terrainExaggeration,
+      attributions,
       tileStatus,
       labels,
       thumbnailCenter,

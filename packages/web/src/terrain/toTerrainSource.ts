@@ -2,7 +2,7 @@ import { TerrainEncoding } from "@web-map/core";
 import type { Terrain } from "@web-map/core";
 import type { RasterDEMSourceSpecification } from "maplibre-gl";
 
-import { formatAttributionHtml } from "../style/formatAttributionHtml.js";
+import { formatAttributionHtml } from "../attribution/formatAttributionHtml.js";
 import { GSI_ELEVATION_SCHEME } from "./gsiElevationScheme.js";
 
 /**

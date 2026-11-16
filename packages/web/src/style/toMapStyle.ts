@@ -1,7 +1,7 @@
 import { BasemapKind } from "@web-map/core";
 import type { Basemap } from "@web-map/core";
 
-import { formatAttributionHtml } from "./formatAttributionHtml.js";
+import { formatAttributionHtml } from "../attribution/formatAttributionHtml.js";
 import type { MapStyle } from "./MapStyle.js";
 
 /** Id of the source and layer a raster basemap is drawn from. */
