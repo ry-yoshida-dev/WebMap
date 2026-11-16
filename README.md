@@ -23,17 +23,33 @@ separate, optional package. See [docs/basemaps.md](docs/basemaps.md) for each on
 
 ## Installation
 
-The packages are not on the npm registry. Build them and pack them as tarballs:
+The packages are not on the npm registry. Pushing a tag such as `v0.1.0` makes GitHub Actions attach their tarballs to
+a GitHub Release, and an app depends on those URLs. `@web-map/web` depends on `@web-map/core` by version, which npm
+would look up in the registry, so the app also depends on `@web-map/core` itself and makes every package use that copy
+with an `overrides` entry:
 
-```bash
-npm install
-npm run build
-npm pack --workspace packages/core --workspace packages/web
+```json
+{
+  "dependencies": {
+    "@web-map/core": "https://github.com/ry-yoshida-dev/WebMap/releases/download/v0.1.0/web-map-core-0.1.0.tgz",
+    "@web-map/web": "https://github.com/ry-yoshida-dev/WebMap/releases/download/v0.1.0/web-map-web-0.1.0.tgz",
+    "maplibre-gl": "^6.16.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "overrides": {
+    "@web-map/core": "$@web-map/core"
+  }
+}
 ```
 
-Install the tarballs in your app together with the peer dependencies `react`, `react-dom` and `maplibre-gl`.
-Pack and install `packages/restricted-basemaps` only if your use complies with the terms of the basemaps you take from
-it ([docs/basemaps.md](docs/basemaps.md#restricted-basemaps)).
+`react`, `react-dom` and `maplibre-gl` are peer dependencies. Add `@web-map/restricted-basemaps` the same way
+(`web-map-restricted-basemaps-0.1.0.tgz`) only if your use complies with the terms of the basemaps you take from it
+([docs/basemaps.md](docs/basemaps.md#restricted-basemaps)). To build the tarballs yourself, run `npm install`,
+`npm run build` and `npm pack --workspace packages/core --workspace packages/web`.
+
+To release, set the same version in the `version` of each package and in the `@web-map/core` dependency of the other
+two, then push the tag `v` plus that version. The workflow checks the versions, runs the checks and creates the release.
 
 ## Usage
 
@@ -80,4 +96,4 @@ npm run dev --workspace examples/web
 
 `.npmrc` skips releases newer than 7 days with npm 11.10 or later; with older npm, pass `--before` with a date a week
 ago when adding dependencies. GitHub Actions runs the `typecheck`, `lint`, `format:check` and `test` scripts on every
-push and pull request.
+push and pull request, and [release.yml](.github/workflows/release.yml) publishes a release for each `v*` tag.
