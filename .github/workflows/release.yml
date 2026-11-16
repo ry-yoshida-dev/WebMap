@@ -41,7 +41,7 @@ jobs:
             }
           '
       - name: Pack the packages
-        run: npm pack --workspace packages/core --workspace packages/restricted-basemaps --workspace packages/web --pack-destination release
+        run: mkdir release && npm pack --workspace packages/core --workspace packages/restricted-basemaps --workspace packages/web --pack-destination release
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
